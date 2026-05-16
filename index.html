@@ -31,9 +31,7 @@ header{
   background:linear-gradient(160deg,#07153a 0%,#0a1f4a 40%,#071428 100%);
   border-bottom:1px solid var(--border);
   padding:36px 24px 28px;
-  text-align:center;
-  position:relative;
-  overflow:hidden;
+  text-align:center;position:relative;overflow:hidden;
 }
 header::before{
   content:'';position:absolute;inset:0;
@@ -64,6 +62,20 @@ header::before{
   position:absolute;top:-10px;right:24px;
   font-size:5rem;opacity:0.04;pointer-events:none;line-height:1;
 }
+
+/* ── TAB NAV ── */
+.tab-nav{
+  display:flex;background:var(--surface);border-bottom:1px solid var(--border);
+}
+.tab-btn{
+  flex:1;max-width:200px;padding:12px 20px;
+  font-family:'Teko',sans-serif;font-size:1rem;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--muted2);
+  background:none;border:none;border-bottom:2px solid transparent;
+  cursor:pointer;transition:all 0.18s;
+}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--green);border-bottom-color:var(--green)}
 
 /* ── STATS BAR ── */
 .stats-bar{
@@ -117,15 +129,9 @@ input[type="text"]::placeholder{color:var(--muted)}
 .tz-invalid{color:var(--red);font-size:0.72rem;margin-top:2px;font-family:'Teko',sans-serif;letter-spacing:0.08em;display:none}
 
 /* ── FAV PANEL ── */
-.fav-panel{
-  background:var(--surface);border-bottom:1px solid var(--border);
-  padding:14px 20px;display:none;
-}
+.fav-panel{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:none}
 .fav-panel.open{display:block}
-.fav-panel-hdr{
-  font-family:'Teko',sans-serif;font-size:0.82rem;letter-spacing:0.15em;
-  text-transform:uppercase;color:var(--muted2);margin-bottom:10px;
-}
+.fav-panel-hdr{font-family:'Teko',sans-serif;font-size:0.82rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted2);margin-bottom:10px}
 .teams-wrap{display:flex;flex-wrap:wrap;gap:6px}
 .chip{
   display:inline-flex;align-items:center;gap:4px;
@@ -136,7 +142,7 @@ input[type="text"]::placeholder{color:var(--muted)}
 .chip:hover{border-color:var(--gold);color:var(--text)}
 .chip.on{background:rgba(245,158,11,0.1);border-color:var(--gold);color:var(--gold)}
 
-/* ── MAIN ── */
+/* ── MAIN / MATCH LIST ── */
 .main{max-width:920px;margin:0 auto;padding:24px 16px}
 .day-block{margin-bottom:32px}
 .day-hdr{
@@ -145,10 +151,7 @@ input[type="text"]::placeholder{color:var(--muted)}
   padding-bottom:8px;border-bottom:1px solid var(--border);
   margin-bottom:10px;display:flex;align-items:center;gap:10px;
 }
-.day-ct{
-  font-size:0.72rem;background:var(--surface2);border:1px solid var(--border);
-  border-radius:100px;padding:2px 9px;color:var(--muted);
-}
+.day-ct{font-size:0.72rem;background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:2px 9px;color:var(--muted)}
 
 /* ── MATCH CARD ── */
 .card{
@@ -157,12 +160,8 @@ input[type="text"]::placeholder{color:var(--muted)}
   display:grid;grid-template-columns:1fr 96px;gap:14px;align-items:center;
   transition:border-color 0.2s;position:relative;overflow:hidden;
 }
-.card::after{
-  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
-  border-radius:3px 0 0 3px;
-}
-.card.fav{background:linear-gradient(160deg,rgba(245,158,11,0.06) 0%,var(--surface) 60%)}
-.card.fav{border-color:rgba(245,158,11,0.3)}
+.card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px}
+.card.fav{background:linear-gradient(160deg,rgba(245,158,11,0.06) 0%,var(--surface) 60%);border-color:rgba(245,158,11,0.3)}
 .card.ok{border-color:var(--green-border);background:linear-gradient(160deg,rgba(16,185,129,0.06) 0%,var(--surface) 60%)}
 .card.ok::after{background:var(--green)}
 .card.bad::after{background:var(--red)}
@@ -187,43 +186,152 @@ input[type="text"]::placeholder{color:var(--muted)}
 .team.right{flex-direction:row-reverse;text-align:right}
 .team.myfav{color:var(--gold)}
 .flag{font-size:1.35rem;line-height:1;flex-shrink:0}
-.vs{
-  font-family:'Teko',sans-serif;font-weight:700;font-size:0.8rem;
-  color:var(--muted);min-width:26px;text-align:center;flex-shrink:0;
-}
+.team-link{cursor:pointer;transition:color 0.15s}
+.team-link:hover{color:var(--accent)}
+.vs{font-family:'Teko',sans-serif;font-weight:700;font-size:0.8rem;color:var(--muted);min-width:26px;text-align:center;flex-shrink:0}
 .venue{font-size:0.78rem;color:var(--muted);margin-top:8px}
 .venue b{color:var(--muted2)}
-
-/* ── TIME BLOCK ── */
 .tblock{text-align:center;flex-shrink:0}
-.tnum{
-  font-family:'Teko',sans-serif;font-weight:700;font-size:1.9rem;
-  letter-spacing:0.02em;line-height:1;
-}
+.tnum{font-family:'Teko',sans-serif;font-weight:700;font-size:1.9rem;letter-spacing:0.02em;line-height:1}
 .ok .tnum{color:var(--green)}
 .bad .tnum{color:var(--red)}
 .tlabel{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-top:1px}
 .tdate{font-size:0.72rem;color:var(--muted2);margin-top:3px}
-.tpill{
-  display:inline-block;margin-top:5px;padding:2px 9px;
-  border-radius:100px;font-family:'Teko',sans-serif;
-  font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;
-}
+.tpill{display:inline-block;margin-top:5px;padding:2px 9px;border-radius:100px;font-family:'Teko',sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:600}
 .ok .tpill{background:var(--green-glow);color:var(--green);border:1px solid var(--green-border)}
 .bad .tpill{background:var(--red-glow);color:var(--red);border:1px solid rgba(244,63,94,0.25)}
 
-/* ── EMPTY ── */
-.empty{
-  text-align:center;padding:64px 20px;color:var(--muted2);
-  font-family:'Teko',sans-serif;font-size:1.3rem;letter-spacing:0.05em;
+/* ── SQUADS VIEW ── */
+.squads-main{max-width:920px;margin:0 auto;padding:24px 16px}
+.squad-group{margin-bottom:12px;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.squad-group-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;background:var(--surface);cursor:pointer;
+  font-family:'Teko',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;
+  transition:background 0.15s;user-select:none;
+}
+.squad-group-hdr:hover{background:var(--surface2)}
+.squad-group-hdr .grp-label{color:var(--gold);font-size:1.1rem;font-weight:700;letter-spacing:0.05em}
+.squad-group-hdr .grp-teams{color:var(--muted2);font-size:0.8rem;letter-spacing:0.05em}
+.squad-group-hdr .grp-arrow{color:var(--muted);font-size:0.9rem;transition:transform 0.2s}
+.squad-group-hdr.open .grp-arrow{transform:rotate(90deg)}
+.squad-group-body{display:none}
+.squad-group-body.open{display:block}
+
+/* Team row inside group */
+.squad-team-row{
+  border-top:1px solid var(--border);
+  background:var(--surface2);
+}
+.squad-team-hdr{
+  display:flex;align-items:center;gap:12px;padding:12px 18px;
+  cursor:pointer;transition:background 0.15s;user-select:none;
+}
+.squad-team-hdr:hover{background:rgba(59,130,246,0.06)}
+.squad-team-hdr .t-flag{font-size:1.4rem}
+.squad-team-hdr .t-name{
+  font-family:'Teko',sans-serif;font-size:1rem;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--text);flex:1;
+}
+.squad-team-hdr .t-status{
+  font-family:'Teko',sans-serif;font-size:0.72rem;letter-spacing:0.1em;
+  text-transform:uppercase;padding:2px 10px;border-radius:100px;
+}
+.squad-team-hdr .t-status.confirmed{background:var(--green-glow);color:var(--green);border:1px solid var(--green-border)}
+.squad-team-hdr .t-status.provisional{background:rgba(245,158,11,0.1);color:var(--gold);border:1px solid rgba(245,158,11,0.3)}
+.squad-team-hdr .t-status.tbd{background:var(--surface);color:var(--muted);border:1px solid var(--border)}
+.squad-team-hdr .t-arrow{color:var(--muted);font-size:0.85rem;transition:transform 0.2s}
+.squad-team-hdr.open .t-arrow{transform:rotate(90deg)}
+.squad-team-body{display:none;padding:0 18px 16px}
+.squad-team-body.open{display:block}
+
+/* Coach row */
+.coach-row{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 0 12px;border-bottom:1px solid var(--border);margin-bottom:12px;
+}
+.coach-label{font-family:'Teko',sans-serif;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted)}
+.coach-name{
+  font-family:'Teko',sans-serif;font-size:0.95rem;letter-spacing:0.05em;
+  text-transform:uppercase;color:var(--text);
+}
+.coach-name a{color:var(--accent)}
+.coach-name a:hover{text-decoration:underline}
+.coach-country{font-size:0.85rem}
+
+/* Player table */
+.player-table{width:100%;border-collapse:collapse;font-size:0.86rem}
+.player-table th{
+  font-family:'Teko',sans-serif;font-size:0.7rem;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--muted);padding:5px 8px;
+  border-bottom:1px solid var(--border);text-align:left;
+}
+.player-table th.center{text-align:center}
+.player-table td{padding:6px 8px;border-bottom:1px solid rgba(26,45,78,0.5);vertical-align:middle}
+.player-table tr:last-child td{border-bottom:none}
+.player-table tr:hover td{background:rgba(59,130,246,0.04)}
+.pos-badge{
+  font-family:'Teko',sans-serif;font-size:0.68rem;letter-spacing:0.08em;
+  padding:1px 6px;border-radius:3px;text-align:center;display:inline-block;
+}
+.pos-badge.GK{background:rgba(245,158,11,0.12);color:var(--gold);border:1px solid rgba(245,158,11,0.25)}
+.pos-badge.DF{background:rgba(59,130,246,0.12);color:#93c5fd;border:1px solid rgba(59,130,246,0.25)}
+.pos-badge.MF{background:var(--green-glow);color:var(--green);border:1px solid var(--green-border)}
+.pos-badge.FW{background:rgba(244,63,94,0.1);color:#fb7185;border:1px solid rgba(244,63,94,0.2)}
+.player-num{font-family:'Teko',sans-serif;font-size:1rem;color:var(--muted2);text-align:center}
+.player-name{color:var(--text);font-weight:500}
+.player-name a{color:var(--accent)}
+.player-name a:hover{text-decoration:underline}
+.club-cell{display:flex;align-items:center;gap:6px;color:var(--muted2)}
+.club-logo-img{width:18px;height:18px;object-fit:contain;flex-shrink:0}
+.squad-tbd{
+  text-align:center;padding:24px 12px;
+  font-family:'Teko',sans-serif;font-size:1rem;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--muted);
 }
 
-/* ── FOOTER ── */
-footer{
-  text-align:center;padding:24px 16px;color:var(--muted);
-  font-size:0.78rem;border-top:1px solid var(--border);
-  font-family:'Teko',sans-serif;letter-spacing:0.08em;
+/* ── SQUAD MODAL ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(5,13,30,0.85);
+  z-index:1000;overflow-y:auto;padding:20px;
+  backdrop-filter:blur(4px);
 }
+.modal-overlay.open{display:flex;align-items:flex-start;justify-content:center}
+.modal{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  width:100%;max-width:640px;position:relative;overflow:hidden;
+  margin:auto;
+}
+.modal-hdr{
+  display:flex;align-items:center;gap:12px;
+  padding:18px 20px;border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,var(--surface2),var(--surface));
+}
+.modal-hdr .m-flag{font-size:2rem}
+.modal-hdr .m-team{
+  font-family:'Teko',sans-serif;font-size:1.6rem;font-weight:700;
+  letter-spacing:0.06em;text-transform:uppercase;color:var(--text);flex:1;
+}
+.modal-hdr .m-status{
+  font-family:'Teko',sans-serif;font-size:0.72rem;letter-spacing:0.1em;
+  text-transform:uppercase;padding:3px 10px;border-radius:100px;
+}
+.modal-hdr .m-status.confirmed{background:var(--green-glow);color:var(--green);border:1px solid var(--green-border)}
+.modal-hdr .m-status.provisional{background:rgba(245,158,11,0.1);color:var(--gold);border:1px solid rgba(245,158,11,0.3)}
+.modal-hdr .m-status.tbd{background:var(--surface);color:var(--muted);border:1px solid var(--border)}
+.modal-close{
+  position:absolute;top:14px;right:14px;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--muted2);width:30px;height:30px;border-radius:50%;
+  cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;
+  transition:all 0.15s;
+}
+.modal-close:hover{border-color:var(--red);color:var(--red)}
+.modal-body{padding:16px 20px 20px;max-height:70vh;overflow-y:auto}
+
+/* ── EMPTY / FOOTER ── */
+.empty{text-align:center;padding:64px 20px;color:var(--muted2);font-family:'Teko',sans-serif;font-size:1.3rem;letter-spacing:0.05em}
+footer{text-align:center;padding:24px 16px;color:var(--muted);font-size:0.78rem;border-top:1px solid var(--border);font-family:'Teko',sans-serif;letter-spacing:0.08em}
 
 /* ── RESPONSIVE ── */
 @media(max-width:600px){
@@ -233,6 +341,7 @@ footer{
   .ctrl-btns{margin-left:0}
   .stats-bar{justify-content:flex-start;overflow-x:auto}
   input[type="text"]{width:130px}
+  .squad-group-hdr .grp-teams{display:none}
 }
 </style>
 </head>
@@ -247,86 +356,94 @@ footer{
   </div>
 </header>
 
-<div class="stats-bar">
-  <div class="stat-item">
-    <div class="stat-num g" id="sGood">—</div>
-    <div class="stat-label">✓ Good Time</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num r" id="sBad">—</div>
-    <div class="stat-label">✗ Late Night</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num gold" id="sTeam">0</div>
-    <div class="stat-label">⭐ My Teams</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num" id="sShown">104</div>
-    <div class="stat-label">Shown / 104</div>
-  </div>
-</div>
+<nav class="tab-nav">
+  <button class="tab-btn active" id="tabMatches" onclick="switchTab('matches')">⚽ Matches</button>
+  <button class="tab-btn" id="tabSquads" onclick="switchTab('squads')">👥 Squads</button>
+</nav>
 
-<div class="controls">
-  <div class="ctrl-group">
-    <div class="ctrl-label">Favorable window (Your Local Time)</div>
-    <div class="time-row">
-      <input type="time" id="tStart" value="05:00">
-      <span>to</span>
-      <input type="time" id="tEnd" value="22:00">
+<div id="matchesView">
+  <div class="stats-bar">
+    <div class="stat-item"><div class="stat-num g" id="sGood">—</div><div class="stat-label">✓ Good Time</div></div>
+    <div class="stat-item"><div class="stat-num r" id="sBad">—</div><div class="stat-label">✗ Late Night</div></div>
+    <div class="stat-item"><div class="stat-num gold" id="sTeam">0</div><div class="stat-label">⭐ My Teams</div></div>
+    <div class="stat-item"><div class="stat-num" id="sShown">104</div><div class="stat-label">Shown / 104</div></div>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <div class="ctrl-label">Favorable window (Your Local Time)</div>
+      <div class="time-row">
+        <input type="time" id="tStart" value="05:00">
+        <span>to</span>
+        <input type="time" id="tEnd" value="22:00">
+      </div>
+    </div>
+
+    <div class="ctrl-group">
+      <div class="ctrl-label">Timezone (IANA)</div>
+      <div class="time-row">
+        <input type="text" id="tzInput" placeholder="e.g. Asia/Kolkata">
+        <button class="btn blue" onclick="applyTZ()">Apply</button>
+      </div>
+      <div class="tz-invalid" id="tzErr">Invalid timezone</div>
+    </div>
+
+    <div class="ctrl-group">
+      <div class="ctrl-label">Filter by</div>
+      <select id="filterSel">
+        <option value="">All 104 matches</option>
+        <optgroup label="Groups">
+          <option value="A">Group A — Mexico, South Korea, S.Africa, Czechia</option>
+          <option value="B">Group B — Canada, Switzerland, Qatar, Bosnia</option>
+          <option value="C">Group C — Brazil, Morocco, Haiti, Scotland</option>
+          <option value="D">Group D — USA, Paraguay, Australia, Turkey</option>
+          <option value="E">Group E — Germany, Ecuador, Ivory Coast, Curacao</option>
+          <option value="F">Group F — Netherlands, Japan, Sweden, Tunisia</option>
+          <option value="G">Group G — Belgium, Egypt, Iran, New Zealand</option>
+          <option value="H">Group H — Spain, Uruguay, Saudi Arabia, Cape Verde</option>
+          <option value="I">Group I — France, Senegal, Norway, Iraq</option>
+          <option value="J">Group J — Argentina, Austria, Algeria, Jordan</option>
+          <option value="K">Group K — Portugal, Colombia, DR Congo, Uzbekistan</option>
+          <option value="L">Group L — England, Croatia, Ghana, Panama</option>
+        </optgroup>
+        <optgroup label="Knockout Rounds">
+          <option value="R32">Round of 32</option>
+          <option value="R16">Round of 16</option>
+          <option value="QF">Quarter-Finals</option>
+          <option value="SF">Semi-Finals</option>
+          <option value="3P">Third Place</option>
+          <option value="F">FINAL</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <div class="ctrl-btns">
+      <button class="btn" id="btnOk" onclick="toggle('ok')">✓ Favorable only</button>
+      <button class="btn" id="btnFav" onclick="toggle('fav')">⭐ My teams</button>
+      <button class="btn" id="btnPanel" onclick="togglePanel()">⚙ Pick my teams</button>
     </div>
   </div>
 
-  <div class="ctrl-group">
-    <div class="ctrl-label">Timezone (IANA)</div>
-    <div class="time-row">
-      <input type="text" id="tzInput" placeholder="e.g. Asia/Kolkata">
-      <button class="btn blue" onclick="applyTZ()">Apply</button>
-    </div>
-    <div class="tz-invalid" id="tzErr">Invalid timezone</div>
+  <div class="fav-panel" id="favPanel">
+    <div class="fav-panel-hdr">Tap a team to add/remove from your favorites ⭐</div>
+    <div class="teams-wrap" id="teamsGrid"></div>
   </div>
 
-  <div class="ctrl-group">
-    <div class="ctrl-label">Filter by</div>
-    <select id="filterSel">
-      <option value="">All 104 matches</option>
-      <optgroup label="Groups">
-        <option value="A">Group A — Mexico, South Korea, S.Africa, Czechia</option>
-        <option value="B">Group B — Canada, Switzerland, Qatar, Bosnia</option>
-        <option value="C">Group C — Brazil, Morocco, Haiti, Scotland</option>
-        <option value="D">Group D — USA, Paraguay, Australia, Turkey</option>
-        <option value="E">Group E — Germany, Ecuador, Ivory Coast, Curacao</option>
-        <option value="F">Group F — Netherlands, Japan, Sweden, Tunisia</option>
-        <option value="G">Group G — Belgium, Egypt, Iran, New Zealand</option>
-        <option value="H">Group H — Spain, Uruguay, Saudi Arabia, Cape Verde</option>
-        <option value="I">Group I — France, Senegal, Norway, Iraq</option>
-        <option value="J">Group J — Argentina, Austria, Algeria, Jordan</option>
-        <option value="K">Group K — Portugal, Colombia, DR Congo, Uzbekistan</option>
-        <option value="L">Group L — England, Croatia, Ghana, Panama</option>
-      </optgroup>
-      <optgroup label="Knockout Rounds">
-        <option value="R32">Round of 32</option>
-        <option value="R16">Round of 16</option>
-        <option value="QF">Quarter-Finals</option>
-        <option value="SF">Semi-Finals</option>
-        <option value="3P">Third Place</option>
-        <option value="F">FINAL</option>
-      </optgroup>
-    </select>
-  </div>
-
-  <div class="ctrl-btns">
-    <button class="btn" id="btnOk" onclick="toggle('ok')">✓ Favorable only</button>
-    <button class="btn" id="btnFav" onclick="toggle('fav')">⭐ My teams</button>
-    <button class="btn" id="btnPanel" onclick="togglePanel()">⚙ Pick my teams</button>
-  </div>
+  <main class="main" id="mainList"></main>
 </div>
 
-<div class="fav-panel" id="favPanel">
-  <div class="fav-panel-hdr">Tap a team to add/remove from your favorites ⭐</div>
-  <div class="teams-wrap" id="teamsGrid"></div>
+<div id="squadsView" style="display:none">
+  <div class="squads-main" id="squadsMain"></div>
 </div>
 
-<main class="main" id="mainList"></main>
+<!-- Squad modal (triggered from match card team click) -->
+<div class="modal-overlay" id="squadModal" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-hdr" id="modalHdr"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
 
 <footer id="footer">
   FIFA WORLD CUP 2026™ OFFICIAL SCHEDULE &nbsp;·&nbsp; ALL TIMES IN YOUR LOCAL TIMEZONE &nbsp;·&nbsp; SHARE THIS PAGE ⚽
@@ -334,7 +451,7 @@ footer{
 
 <script>
 // ═══════════════════════════════════════════════════════
-//  TEAM DATA
+//  TEAM FLAGS
 // ═══════════════════════════════════════════════════════
 const FLAG = {
   "Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿",
@@ -352,12 +469,529 @@ const FLAG = {
 };
 
 // ═══════════════════════════════════════════════════════
+//  CLUB COUNTRY → FLAG
+// ═══════════════════════════════════════════════════════
+const CFLAG = {
+  "England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","Wales":"🏴󠁧󠁢󠁷󠁬󠁳󠁿",
+  "Germany":"🇩🇪","France":"🇫🇷","Spain":"🇪🇸","Italy":"🇮🇹",
+  "Netherlands":"🇳🇱","Portugal":"🇵🇹","Belgium":"🇧🇪","Turkey":"🇹🇷",
+  "Greece":"🇬🇷","Austria":"🇦🇹","Switzerland":"🇨🇭","Czech Republic":"🇨🇿",
+  "Poland":"🇵🇱","Denmark":"🇩🇰","Croatia":"🇭🇷","Serbia":"🇷🇸",
+  "Romania":"🇷🇴","Russia":"🇷🇺","Kazakhstan":"🇰🇿","Cyprus":"🇨🇾",
+  "Norway":"🇳🇴","Sweden":"🇸🇪","Japan":"🇯🇵","South Korea":"🇰🇷",
+  "China":"🇨🇳","Qatar":"🇶🇦","Saudi Arabia":"🇸🇦","UAE":"🇦🇪",
+  "Mexico":"🇲🇽","United States":"🇺🇸","USA":"🇺🇸","Brazil":"🇧🇷",
+  "Argentina":"🇦🇷","Colombia":"🇨🇴","Ghana":"🇬🇭","Morocco":"🇲🇦",
+  "Slovenia":"🇸🇮","Slovakia":"🇸🇰","Hungary":"🇭🇺","Australia":"🇦🇺",
+  "New Zealand":"🇳🇿","Haiti":"🇭🇹","Tunisia":"🇹🇳","Iran":"🇮🇷",
+  "Ecuador":"🇪🇨","Canada":"🇨🇦","Ivory Coast":"🇨🇮","Egypt":"🇪🇬",
+  "Senegal":"🇸🇳","Algeria":"🇩🇿","Cameroon":"🇨🇲","Uruguay":"🇺🇾",
+};
+
+function clubFlag(cc) { return CFLAG[cc] || "🌍"; }
+
+// ═══════════════════════════════════════════════════════
+//  GROUPS
+// ═══════════════════════════════════════════════════════
+const GROUPS = {
+  A:["Mexico","South Korea","South Africa","Czechia"],
+  B:["Canada","Switzerland","Qatar","Bosnia & Herzegovina"],
+  C:["Brazil","Morocco","Haiti","Scotland"],
+  D:["USA","Paraguay","Australia","Turkey"],
+  E:["Germany","Ecuador","Ivory Coast","Curacao"],
+  F:["Netherlands","Japan","Sweden","Tunisia"],
+  G:["Belgium","Egypt","Iran","New Zealand"],
+  H:["Spain","Uruguay","Saudi Arabia","Cape Verde"],
+  I:["France","Senegal","Norway","Iraq"],
+  J:["Argentina","Austria","Algeria","Jordan"],
+  K:["Portugal","Colombia","DR Congo","Uzbekistan"],
+  L:["England","Croatia","Ghana","Panama"],
+};
+
+// ═══════════════════════════════════════════════════════
+//  SQUAD DATA
+//  status: "confirmed" | "provisional" | "tbd"
+//  Jersey numbers (no) pending FIFA official submission (June 2 deadline)
+//  Source: Wikipedia — 2026 FIFA World Cup squads
+// ═══════════════════════════════════════════════════════
+const SQUADS = {
+
+  // ── GROUP A ────────────────────────────────────────
+
+  // Mexico: provisional squad (source: Wikipedia, May 2026)
+  "Mexico": {
+    status: "provisional",
+    coach: { name: "Javier Aguirre", country: "Mexico", wiki: "/wiki/Javier_Aguirre" },
+    players: [
+      { pos:"GK", name:"Guillermo Ochoa",    club:"AEL Limassol",           cc:"Cyprus",       wiki:"/wiki/Guillermo_Ochoa" },
+      { pos:"GK", name:"Raúl Rangel",        club:"Guadalajara",             cc:"Mexico",       wiki:"/wiki/Raúl_Rangel_(footballer)" },
+      { pos:"GK", name:"Alex Padilla",       club:"Athletic Bilbao",         cc:"Spain",        wiki:"/wiki/Alex_Padilla_(footballer)" },
+      { pos:"DF", name:"Jesús Gallardo",     club:"Toluca",                  cc:"Mexico",       wiki:"/wiki/Jesús_Gallardo" },
+      { pos:"DF", name:"César Montes",       club:"Lokomotiv Moscow",        cc:"Russia",       wiki:"/wiki/César_Montes" },
+      { pos:"DF", name:"Jorge Sánchez",      club:"PAOK",                    cc:"Greece",       wiki:"/wiki/Jorge_Sánchez_(footballer,_born_1997)" },
+      { pos:"DF", name:"Johan Vásquez",      club:"Genoa",                   cc:"Italy",        wiki:"/wiki/Johan_Vásquez_(footballer,_born_1998)" },
+      { pos:"DF", name:"Israel Reyes",       club:"América",                 cc:"Mexico",       wiki:"/wiki/Israel_Reyes" },
+      { pos:"DF", name:"Julián Araujo",      club:"Celtic",                  cc:"Scotland",     wiki:"/wiki/Julián_Araujo" },
+      { pos:"DF", name:"Mateo Chávez",       club:"AZ Alkmaar",              cc:"Netherlands",  wiki:"/wiki/Mateo_Chávez" },
+      { pos:"DF", name:"Richard Ledezma",    club:"Guadalajara",             cc:"Mexico",       wiki:"/wiki/Richard_Ledezma" },
+      { pos:"MF", name:"Edson Álvarez",      club:"Fenerbahçe",              cc:"Turkey",       wiki:"/wiki/Edson_Álvarez" },
+      { pos:"MF", name:"Orbelín Pineda",     club:"AEK Athens",              cc:"Greece",       wiki:"/wiki/Orbelín_Pineda" },
+      { pos:"MF", name:"Carlos Rodríguez",   club:"Cruz Azul",               cc:"Mexico",       wiki:"/wiki/Carlos_Rodríguez_(footballer,_born_1997)" },
+      { pos:"MF", name:"Roberto Alvarado",   club:"Guadalajara",             cc:"Mexico",       wiki:"/wiki/Roberto_Alvarado" },
+      { pos:"MF", name:"Luis Romo",          club:"Guadalajara",             cc:"Mexico",       wiki:"/wiki/Luis_Romo" },
+      { pos:"MF", name:"Luis Chávez",        club:"Dynamo Moscow",           cc:"Russia",       wiki:"/wiki/Luis_Chávez_(footballer)" },
+      { pos:"MF", name:"Diego Lainez",       club:"Tigres UANL",             cc:"Mexico",       wiki:"/wiki/Diego_Lainez" },
+      { pos:"MF", name:"Obed Vargas",        club:"Atlético Madrid",         cc:"Spain",        wiki:"/wiki/Obed_Vargas" },
+      { pos:"MF", name:"Álvaro Fidalgo",     club:"Real Betis",              cc:"Spain",        wiki:"/wiki/Álvaro_Fidalgo" },
+      { pos:"FW", name:"Raúl Jiménez",       club:"Fulham",                  cc:"England",      wiki:"/wiki/Raúl_Jiménez" },
+      { pos:"FW", name:"Santiago Giménez",   club:"Milan",                   cc:"Italy",        wiki:"/wiki/Santiago_Giménez" },
+      { pos:"FW", name:"Alexis Vega",        club:"Toluca",                  cc:"Mexico",       wiki:"/wiki/Alexis_Vega_(Mexican_footballer)" },
+      { pos:"FW", name:"César Huerta",       club:"Anderlecht",              cc:"Belgium",      wiki:"/wiki/César_Huerta" },
+      { pos:"FW", name:"Julián Quiñones",    club:"Al-Qadsiah",              cc:"Saudi Arabia", wiki:"/wiki/Julián_Quiñones" },
+      { pos:"FW", name:"Germán Berterame",   club:"Inter Miami CF",          cc:"USA",          wiki:"/wiki/Germán_Berterame" },
+    ]
+  },
+
+  // South Korea: confirmed squad (source: Wikipedia, announced May 16 2026)
+  "South Korea": {
+    status: "confirmed",
+    coach: { name: "Hong Myung-bo", country: "South Korea", wiki: "/wiki/Hong_Myung-bo" },
+    players: [
+      { pos:"GK", name:"Kim Seung-gyu",   club:"FC Tokyo",                  cc:"Japan",        wiki:"/wiki/Kim_Seung-gyu" },
+      { pos:"GK", name:"Jo Hyeon-woo",    club:"Ulsan HD",                  cc:"South Korea",  wiki:"/wiki/Jo_Hyeon-woo" },
+      { pos:"GK", name:"Song Bum-keun",   club:"Jeonbuk Hyundai Motors",    cc:"South Korea",  wiki:"/wiki/Song_Bum-keun" },
+      { pos:"DF", name:"Kim Min-jae",     club:"Bayern Munich",             cc:"Germany",      wiki:"/wiki/Kim_Min-jae_(footballer)" },
+      { pos:"DF", name:"Kim Moon-hwan",   club:"Daejeon Hana Citizen",      cc:"South Korea",  wiki:"/wiki/Kim_Moon-hwan" },
+      { pos:"DF", name:"Seol Young-woo",  club:"Red Star Belgrade",         cc:"Serbia",       wiki:"/wiki/Seol_Young-woo" },
+      { pos:"DF", name:"Cho Yu-min",      club:"Sharjah",                   cc:"UAE",          wiki:"/wiki/Cho_Yu-min" },
+      { pos:"DF", name:"Lee Tae-seok",    club:"Austria Wien",              cc:"Austria",      wiki:"/wiki/Lee_Tae-seok" },
+      { pos:"DF", name:"Park Jin-seob",   club:"Zhejiang FC",               cc:"China",        wiki:"/wiki/Park_Jin-seob_(footballer,_born_1995)" },
+      { pos:"DF", name:"Kim Tae-hyeon",   club:"Kashima Antlers",           cc:"Japan",        wiki:"/wiki/Kim_Tae-hyeon" },
+      { pos:"DF", name:"Lee Han-beom",    club:"Midtjylland",               cc:"Denmark",      wiki:"/wiki/Lee_Han-beom" },
+      { pos:"DF", name:"Jens Castrop",    club:"Borussia Mönchengladbach",  cc:"Germany",      wiki:"/wiki/Jens_Castrop" },
+      { pos:"DF", name:"Lee Ki-hyuk",     club:"Gangwon FC",                cc:"South Korea",  wiki:"/wiki/Lee_Ki-hyuk_(footballer)" },
+      { pos:"MF", name:"Lee Jae-sung",    club:"Mainz 05",                  cc:"Germany",      wiki:"/wiki/Lee_Jae-sung" },
+      { pos:"MF", name:"Hwang Hee-chan",  club:"Wolverhampton Wanderers",   cc:"England",      wiki:"/wiki/Hwang_Hee-chan" },
+      { pos:"MF", name:"Hwang In-beom",   club:"Feyenoord",                 cc:"Netherlands",  wiki:"/wiki/Hwang_In-beom" },
+      { pos:"MF", name:"Lee Kang-in",     club:"Paris Saint-Germain",       cc:"France",       wiki:"/wiki/Lee_Kang-in" },
+      { pos:"MF", name:"Paik Seung-ho",   club:"Birmingham City",           cc:"England",      wiki:"/wiki/Paik_Seung-ho" },
+      { pos:"MF", name:"Kim Jin-gyu",     club:"Jeonbuk Hyundai Motors",    cc:"South Korea",  wiki:"/wiki/Kim_Jin-gyu_(footballer,_born_1997)" },
+      { pos:"MF", name:"Lee Dong-gyeong", club:"Ulsan HD",                  cc:"South Korea",  wiki:"/wiki/Lee_Dong-gyeong" },
+      { pos:"MF", name:"Bae Jun-ho",      club:"Stoke City",                cc:"England",      wiki:"/wiki/Bae_Jun-ho" },
+      { pos:"MF", name:"Eom Ji-sung",     club:"Swansea City",              cc:"Wales",        wiki:"/wiki/Eom_Ji-sung" },
+      { pos:"MF", name:"Yang Hyun-jun",   club:"Celtic",                    cc:"Scotland",     wiki:"/wiki/Yang_Hyun-jun" },
+      { pos:"FW", name:"Son Heung-min",   club:"Los Angeles FC",            cc:"United States",wiki:"/wiki/Son_Heung-min" },
+      { pos:"FW", name:"Cho Gue-sung",    club:"Midtjylland",               cc:"Denmark",      wiki:"/wiki/Cho_Gue-sung" },
+      { pos:"FW", name:"Oh Hyeon-gyu",    club:"Beşiktaş",                  cc:"Turkey",       wiki:"/wiki/Oh_Hyeon-gyu" },
+    ]
+  },
+
+  // South Africa: TBD
+  "South Africa": { status:"tbd", coach:null, players:[] },
+
+  // Czechia: confirmed squad (source: Wikipedia, May 2026)
+  "Czechia": {
+    status: "confirmed",
+    coach: { name: "Miroslav Koubek", country: "Czech Republic", wiki: "/wiki/Miroslav_Koubek" },
+    players: [
+      { pos:"GK", name:"Matěj Kovář",       club:"PSV Eindhoven",           cc:"Netherlands",  wiki:"/wiki/Matěj_Kovář" },
+      { pos:"GK", name:"Jindřich Staněk",   club:"Slavia Prague",           cc:"Czech Republic",wiki:"/wiki/Jindřich_Staněk" },
+      { pos:"GK", name:"Martin Jedlička",   club:"Baník Ostrava",           cc:"Czech Republic",wiki:"/wiki/Martin_Jedlička" },
+      { pos:"DF", name:"Vladimír Coufal",   club:"TSG Hoffenheim",          cc:"Germany",      wiki:"/wiki/Vladimír_Coufal" },
+      { pos:"DF", name:"Tomáš Holeš",       club:"Slavia Prague",           cc:"Czech Republic",wiki:"/wiki/Tomáš_Holeš" },
+      { pos:"DF", name:"Ladislav Krejčí",   club:"Wolverhampton Wanderers", cc:"England",      wiki:"/wiki/Ladislav_Krejčí_(footballer,_born_1999)" },
+      { pos:"DF", name:"David Zima",        club:"Slavia Prague",           cc:"Czech Republic",wiki:"/wiki/David_Zima" },
+      { pos:"DF", name:"Jaroslav Zelený",   club:"Sparta Prague",           cc:"Czech Republic",wiki:"/wiki/Jaroslav_Zelený" },
+      { pos:"DF", name:"David Jurásek",     club:"Slavia Prague",           cc:"Czech Republic",wiki:"/wiki/David_Jurásek" },
+      { pos:"DF", name:"David Douděra",     club:"Slavia Prague",           cc:"Czech Republic",wiki:"/wiki/David_Douděra" },
+      { pos:"DF", name:"Robin Hranáč",      club:"TSG Hoffenheim",          cc:"Germany",      wiki:"/wiki/Robin_Hranáč" },
+      { pos:"DF", name:"Václav Jemelka",    club:"Viktoria Plzeň",          cc:"Czech Republic",wiki:"/wiki/Václav_Jemelka" },
+      { pos:"DF", name:"Martin Vitík",      club:"Bologna",                 cc:"Italy",        wiki:"/wiki/Martin_Vitík" },
+      { pos:"MF", name:"Tomáš Souček",      club:"West Ham United",         cc:"England",      wiki:"/wiki/Tomáš_Souček" },
+      { pos:"MF", name:"Vladimír Darida",   club:"Hradec Králové",          cc:"Czech Republic",wiki:"/wiki/Vladimír_Darida" },
+      { pos:"MF", name:"Lukáš Provod",      club:"Slavia Prague",           cc:"Czech Republic",wiki:"/wiki/Lukáš_Provod" },
+      { pos:"MF", name:"Michal Sadílek",    club:"Slavia Prague",           cc:"Czech Republic",wiki:"/wiki/Michal_Sadílek" },
+      { pos:"MF", name:"Pavel Šulc",        club:"Lyon",                    cc:"France",       wiki:"/wiki/Pavel_Šulc" },
+      { pos:"MF", name:"Lukáš Červ",        club:"Viktoria Plzeň",          cc:"Czech Republic",wiki:"/wiki/Lukáš_Červ" },
+      { pos:"MF", name:"Adam Karabec",      club:"Lyon",                    cc:"France",       wiki:"/wiki/Adam_Karabec" },
+      { pos:"FW", name:"Patrik Schick",     club:"Bayer Leverkusen",        cc:"Germany",      wiki:"/wiki/Patrik_Schick" },
+      { pos:"FW", name:"Matěj Vydra",       club:"Viktoria Plzeň",          cc:"Czech Republic",wiki:"/wiki/Matěj_Vydra" },
+      { pos:"FW", name:"Adam Hložek",       club:"TSG Hoffenheim",          cc:"Germany",      wiki:"/wiki/Adam_Hložek" },
+      { pos:"FW", name:"Jan Kuchta",        club:"Sparta Prague",           cc:"Czech Republic",wiki:"/wiki/Jan_Kuchta" },
+      { pos:"FW", name:"Tomáš Chorý",       club:"Slavia Prague",           cc:"Czech Republic",wiki:"/wiki/Tomáš_Chorý" },
+    ]
+  },
+
+  // ── GROUP B ────────────────────────────────────────
+
+  // Canada: TBD
+  "Canada": { status:"tbd", coach:null, players:[] },
+
+  // Switzerland: TBD
+  "Switzerland": { status:"tbd", coach:null, players:[] },
+
+  // Qatar: partial provisional squad (source: Wikipedia, May 2026 — incomplete, MF/FW missing)
+  "Qatar": {
+    status: "provisional",
+    coach: { name: "Julen Lopetegui", country: "Spain", wiki: "/wiki/Julen_Lopetegui" },
+    players: [
+      { pos:"GK", name:"Meshaal Barsham",     club:"Al-Sadd",         cc:"Qatar", wiki:"/wiki/Meshaal_Barsham" },
+      { pos:"GK", name:"Salah Zakaria",       club:"Al-Duhail",       cc:"Qatar", wiki:"/wiki/Salah_Zakaria" },
+      { pos:"GK", name:"Mahmud Abunada",      club:"Al-Rayyan",       cc:"Qatar", wiki:"/wiki/Mahmud_Abunada" },
+      { pos:"GK", name:"Shehab Ellethy",      club:"Al-Shahaniya",    cc:"Qatar", wiki:"/wiki/Shehab_Ellethy" },
+      { pos:"DF", name:"Boualem Khoukhi",     club:"Al-Sadd",         cc:"Qatar", wiki:"/wiki/Boualem_Khoukhi" },
+      { pos:"DF", name:"Pedro Miguel",        club:"Al-Sadd",         cc:"Qatar", wiki:"/wiki/Pedro_Miguel_(footballer)" },
+      { pos:"DF", name:"Tarek Salman",        club:"Al-Sadd",         cc:"Qatar", wiki:"/wiki/Tarek_Salman" },
+      { pos:"DF", name:"Bassam Al-Rawi",      club:"Al-Duhail",       cc:"Qatar", wiki:"/wiki/Bassam_Al-Rawi" },
+      { pos:"DF", name:"Homam Ahmed",         club:"Cultural Leonesa", cc:"Spain", wiki:"/wiki/Homam_Ahmed" },
+      { pos:"DF", name:"Lucas Mendes",        club:"Al-Wakrah",       cc:"Qatar", wiki:"/wiki/Lucas_Mendes_(footballer,_born_1990)" },
+      { pos:"DF", name:"Sultan Al-Brake",     club:"Al-Duhail",       cc:"Qatar", wiki:"/wiki/Sultan_Al-Brake" },
+      { pos:"DF", name:"Al-Hashmi Al-Hussain",club:"Al-Arabi",        cc:"Qatar", wiki:"/wiki/Al-Hashmi_Al-Hussain" },
+      { pos:"DF", name:"Ayoub Al-Oui",        club:"Al-Gharafa",      cc:"Qatar", wiki:"/wiki/Ayoub_Al-Oui" },
+      { pos:"DF", name:"Issa Laye",           club:"Al-Arabi",        cc:"Qatar", wiki:"/wiki/Issa_Laye" },
+      { pos:"DF", name:"Rayyan Al-Ali",       club:"Al-Gharafa",      cc:"Qatar", wiki:"/wiki/Rayyan_Al-Ali" },
+      { pos:"DF", name:"Niall Mason",         club:"Qatar SC",        cc:"Qatar", wiki:"/wiki/Niall_Mason" },
+      { pos:"MF", name:"Abdulaziz Hatem",     club:"Al-Rayyan",       cc:"Qatar", wiki:"/wiki/Abdulaziz_Hatem" },
+    ]
+  },
+
+  // Bosnia & Herzegovina: confirmed squad (source: Wikipedia, announced May 11 2026 — first team to confirm)
+  "Bosnia & Herzegovina": {
+    status: "confirmed",
+    coach: { name: "Sergej Barbarez", country: "Bosnia and Herzegovina", wiki: "/wiki/Sergej_Barbarez" },
+    players: [
+      { pos:"GK", name:"Nikola Vasilj",          club:"FC St. Pauli",          cc:"Germany",      wiki:"/wiki/Nikola_Vasilj" },
+      { pos:"GK", name:"Martin Zlomislić",        club:"Rijeka",                cc:"Croatia",      wiki:"/wiki/Martin_Zlomislić" },
+      { pos:"GK", name:"Osman Hadžikić",          club:"Slaven Belupo",         cc:"Croatia",      wiki:"/wiki/Osman_Hadžikić" },
+      { pos:"DF", name:"Sead Kolašinac",          club:"Atalanta",              cc:"Italy",        wiki:"/wiki/Sead_Kolašinac" },
+      { pos:"DF", name:"Dennis Hadžikadunić",     club:"Sampdoria",             cc:"Italy",        wiki:"/wiki/Dennis_Hadžikadunić" },
+      { pos:"DF", name:"Amar Dedić",              club:"Benfica",               cc:"Portugal",     wiki:"/wiki/Amar_Dedić" },
+      { pos:"DF", name:"Nikola Katić",            club:"Schalke 04",            cc:"Germany",      wiki:"/wiki/Nikola_Katić" },
+      { pos:"DF", name:"Tarik Muharemović",       club:"Sassuolo",              cc:"Italy",        wiki:"/wiki/Tarik_Muharemović" },
+      { pos:"DF", name:"Nihad Mujakić",           club:"Gaziantep",             cc:"Turkey",       wiki:"/wiki/Nihad_Mujakić" },
+      { pos:"DF", name:"Stjepan Radeljić",        club:"Rijeka",                cc:"Croatia",      wiki:"/wiki/Stjepan_Radeljić" },
+      { pos:"DF", name:"Nidal Čelik",             club:"Lens",                  cc:"France",       wiki:"/wiki/Nidal_Čelik" },
+      { pos:"MF", name:"Amir Hadžiahmetović",     club:"Hull City",             cc:"England",      wiki:"/wiki/Amir_Hadžiahmetović" },
+      { pos:"MF", name:"Benjamin Tahirović",      club:"Brøndby",               cc:"Denmark",      wiki:"/wiki/Benjamin_Tahirović" },
+      { pos:"MF", name:"Armin Gigović",           club:"Young Boys",            cc:"Switzerland",  wiki:"/wiki/Armin_Gigović" },
+      { pos:"MF", name:"Dženis Burnić",           club:"Karlsruher SC",         cc:"Germany",      wiki:"/wiki/Dženis_Burnić" },
+      { pos:"MF", name:"Ivan Bašić",              club:"Astana",                cc:"Kazakhstan",   wiki:"/wiki/Ivan_Bašić" },
+      { pos:"MF", name:"Esmir Bajraktarević",     club:"PSV Eindhoven",         cc:"Netherlands",  wiki:"/wiki/Esmir_Bajraktarević" },
+      { pos:"MF", name:"Amar Memić",              club:"Viktoria Plzeň",        cc:"Czech Republic",wiki:"/wiki/Amar_Memić" },
+      { pos:"MF", name:"Ivan Šunjić",             club:"Pafos",                 cc:"Cyprus",       wiki:"/wiki/Ivan_Šunjić" },
+      { pos:"MF", name:"Kerim Alajbegović",       club:"Red Bull Salzburg",     cc:"Austria",      wiki:"/wiki/Kerim_Alajbegović" },
+      { pos:"FW", name:"Edin Džeko",              club:"Schalke 04",            cc:"Germany",      wiki:"/wiki/Edin_Džeko" },
+      { pos:"FW", name:"Ermedin Demirović",       club:"VfB Stuttgart",         cc:"Germany",      wiki:"/wiki/Ermedin_Demirović" },
+      { pos:"FW", name:"Samed Baždar",            club:"Jagiellonia Białystok", cc:"Poland",       wiki:"/wiki/Samed_Baždar" },
+      { pos:"FW", name:"Haris Tabaković",         club:"Borussia Mönchengladbach",cc:"Germany",    wiki:"/wiki/Haris_Tabaković" },
+      { pos:"FW", name:"Jovo Lukić",              club:"Universitatea Cluj",    cc:"Romania",      wiki:"/wiki/Jovo_Lukić" },
+    ]
+  },
+
+  // ── GROUPS C–L: TBD ───────────────────────────────
+  "Brazil":         { status:"tbd", coach:null, players:[] },
+  "Morocco":        { status:"tbd", coach:null, players:[] },
+  // Haiti: confirmed squad (source: Wikipedia, May 2026)
+  "Haiti": {
+    status: "confirmed",
+    coach: { name: "Sébastien Migné", country: "France", wiki: "/wiki/Sébastien_Migné" },
+    players: [
+      { pos:"GK", name:"Johny Placide",         club:"SC Bastia",                    cc:"France",       wiki:"/wiki/Johny_Placide" },
+      { pos:"GK", name:"Alexandre Pierre",      club:"FC Sochaux-Montbéliard",       cc:"France",       wiki:"/wiki/Alexandre_Pierre" },
+      { pos:"GK", name:"Josué Duverger",        club:"FC Cosmos Koblenz",            cc:"Germany",      wiki:"/wiki/Josué_Duverger" },
+      { pos:"DF", name:"Ricardo Adé",           club:"L.D.U. Quito",                cc:"Ecuador",      wiki:"/wiki/Ricardo_Adé" },
+      { pos:"DF", name:"Carlens Arcus",         club:"Angers SCO",                   cc:"France",       wiki:"/wiki/Carlens_Arcus" },
+      { pos:"DF", name:"Martin Expérience",     club:"AS Nancy Lorraine",            cc:"France",       wiki:"/wiki/Martin_Expérience" },
+      { pos:"DF", name:"Jean-Kévin Duverne",    club:"K.A.A. Gent",                 cc:"Belgium",      wiki:"/wiki/Jean-Kévin_Duverne" },
+      { pos:"DF", name:"Duke Lacroix",          club:"Colorado Springs Switchbacks", cc:"United States",wiki:"/wiki/Duke_Lacroix" },
+      { pos:"DF", name:"Wilguens Paugain",      club:"S.V. Zulte Waregem",          cc:"Belgium",      wiki:"/wiki/Wilguens_Paugain" },
+      { pos:"DF", name:"Hannes Delcroix",       club:"FC Lugano",                    cc:"Switzerland",  wiki:"/wiki/Hannes_Delcroix" },
+      { pos:"DF", name:"Keeto Thermoncy",       club:"BSC Young Boys",               cc:"Switzerland",  wiki:"/wiki/Keeto_Thermoncy" },
+      { pos:"MF", name:"Leverton Pierre",       club:"F.C. Vizela",                  cc:"Portugal",     wiki:"/wiki/Leverton_Pierre" },
+      { pos:"MF", name:"Danley Jean Jacques",   club:"Philadelphia Union",           cc:"United States",wiki:"/wiki/Danley_Jean_Jacques" },
+      { pos:"MF", name:"Carl Sainté",           club:"El Paso Locomotive FC",        cc:"United States",wiki:"/wiki/Carl_Sainté" },
+      { pos:"MF", name:"Jean-Ricner Bellegarde",club:"Wolverhampton Wanderers",      cc:"England",      wiki:"/wiki/Jean-Ricner_Bellegarde" },
+      { pos:"MF", name:"Woodensky Pierre",      club:"Violette AC",                  cc:"Haiti",        wiki:"/wiki/Woodensky_Pierre" },
+      { pos:"MF", name:"Dominique Simon",       club:"1. FC Tatran Prešov",          cc:"Slovakia",     wiki:"/wiki/Dominique_Simon" },
+      { pos:"FW", name:"Duckens Nazon",         club:"Esteghlal FC",                 cc:"Iran",         wiki:"/wiki/Duckens_Nazon" },
+      { pos:"FW", name:"Frantzdy Pierrot",      club:"Çaykur Rizespor",              cc:"Turkey",       wiki:"/wiki/Frantzdy_Pierrot" },
+      { pos:"FW", name:"Derrick Etienne Jr.",   club:"Toronto FC",                   cc:"Canada",       wiki:"/wiki/Derrick_Etienne_Jr" },
+      { pos:"FW", name:"Louicius Deedson",      club:"FC Dallas",                    cc:"United States",wiki:"/wiki/Louicius_Deedson" },
+      { pos:"FW", name:"Ruben Providence",      club:"Almere City FC",               cc:"Netherlands",  wiki:"/wiki/Ruben_Providence" },
+      { pos:"FW", name:"Josué Casimir",         club:"AJ Auxerre",                   cc:"France",       wiki:"/wiki/Josué_Casimir" },
+      { pos:"FW", name:"Yassin Fortuné",        club:"F.C. Vizela",                  cc:"Portugal",     wiki:"/wiki/Yassin_Fortuné" },
+      { pos:"FW", name:"Wilson Isidor",         club:"Sunderland AFC",               cc:"England",      wiki:"/wiki/Wilson_Isidor" },
+      { pos:"FW", name:"Lenny Joseph",          club:"Ferencvárosi TC",              cc:"Hungary",      wiki:"/wiki/Lenny_Joseph" },
+    ]
+  },
+  "Scotland":       { status:"tbd", coach:null, players:[] },
+  "USA":            { status:"tbd", coach:null, players:[] },
+  "Paraguay":       { status:"tbd", coach:null, players:[] },
+  "Australia":      { status:"tbd", coach:null, players:[] },
+  "Turkey":         { status:"tbd", coach:null, players:[] },
+  "Germany":        { status:"tbd", coach:null, players:[] },
+  "Ecuador":        { status:"tbd", coach:null, players:[] },
+  // Ivory Coast: confirmed squad (source: Wikipedia, announced May 15 2026)
+  "Ivory Coast": {
+    status: "confirmed",
+    coach: { name: "Emerse Faé", country: "Ivory Coast", wiki: "/wiki/Emerse_Faé" },
+    players: [
+      { pos:"GK", name:"Yahia Fofana",         club:"Çaykur Rizespor",   cc:"Turkey",       wiki:"/wiki/Yahia_Fofana" },
+      { pos:"GK", name:"Alban Lafont",         club:"Panathinaikos",     cc:"Greece",       wiki:"/wiki/Alban_Lafont" },
+      { pos:"GK", name:"Mohamed Koné",         club:"Charleroi",         cc:"Belgium",      wiki:"/wiki/Mohamed_Koné_(footballer,_born_2002)" },
+      { pos:"DF", name:"Ghislain Konan",       club:"Gil Vicente",       cc:"Portugal",     wiki:"/wiki/Ghislain_Konan" },
+      { pos:"DF", name:"Odilon Kossounou",     club:"Atalanta",          cc:"Italy",        wiki:"/wiki/Odilon_Kossounou" },
+      { pos:"DF", name:"Wilfried Singo",       club:"Galatasaray",       cc:"Turkey",       wiki:"/wiki/Wilfried_Singo" },
+      { pos:"DF", name:"Evan Ndicka",          club:"Roma",              cc:"Italy",        wiki:"/wiki/Evan_Ndicka" },
+      { pos:"DF", name:"Emmanuel Agbadou",     club:"Beşiktaş",          cc:"Turkey",       wiki:"/wiki/Emmanuel_Agbadou" },
+      { pos:"DF", name:"Guéla Doué",           club:"Strasbourg",        cc:"France",       wiki:"/wiki/Guéla_Doué" },
+      { pos:"DF", name:"Ousmane Diomande",     club:"Sporting CP",       cc:"Portugal",     wiki:"/wiki/Ousmane_Diomande" },
+      { pos:"DF", name:"Clément Akpa",         club:"Auxerre",           cc:"France",       wiki:"/wiki/Clément_Akpa" },
+      { pos:"MF", name:"Franck Kessié",        club:"Al-Ahli",           cc:"Saudi Arabia", wiki:"/wiki/Franck_Kessié" },
+      { pos:"MF", name:"Jean Michaël Seri",    club:"Maribor",           cc:"Slovenia",     wiki:"/wiki/Jean_Michaël_Seri" },
+      { pos:"MF", name:"Ibrahim Sangaré",      club:"Nottingham Forest", cc:"England",      wiki:"/wiki/Ibrahim_Sangaré_(Ivorian_footballer)" },
+      { pos:"MF", name:"Seko Fofana",          club:"Porto",             cc:"Portugal",     wiki:"/wiki/Seko_Fofana" },
+      { pos:"MF", name:"Christ Inao Oulaï",    club:"Trabzonspor",       cc:"Turkey",       wiki:"/wiki/Christ_Inao_Oulaï" },
+      { pos:"MF", name:"Parfait Guiagon",      club:"Charleroi",         cc:"Belgium",      wiki:"/wiki/Parfait_Guiagon" },
+      { pos:"FW", name:"Nicolas Pépé",         club:"Villarreal",        cc:"Spain",        wiki:"/wiki/Nicolas_Pépé" },
+      { pos:"FW", name:"Oumar Diakité",        club:"Cercle Brugge",     cc:"Belgium",      wiki:"/wiki/Oumar_Diakité" },
+      { pos:"FW", name:"Simon Adingra",        club:"Monaco",            cc:"France",       wiki:"/wiki/Simon_Adingra" },
+      { pos:"FW", name:"Evann Guessand",       club:"Crystal Palace",    cc:"England",      wiki:"/wiki/Evann_Guessand" },
+      { pos:"FW", name:"Amad Diallo",          club:"Manchester United", cc:"England",      wiki:"/wiki/Amad_Diallo" },
+      { pos:"FW", name:"Yan Diomande",         club:"RB Leipzig",        cc:"Germany",      wiki:"/wiki/Yan_Diomande" },
+      { pos:"FW", name:"Bazoumana Touré",      club:"TSG Hoffenheim",    cc:"Germany",      wiki:"/wiki/Bazoumana_Touré" },
+      { pos:"FW", name:"Elye Wahi",            club:"Nice",              cc:"France",       wiki:"/wiki/Elye_Wahi" },
+      { pos:"FW", name:"Ange-Yoan Bonny",      club:"Inter Milan",       cc:"Italy",        wiki:"/wiki/Ange-Yoan_Bonny" },
+    ]
+  },
+  "Curacao":        { status:"tbd", coach:null, players:[] },
+  "Netherlands":    { status:"tbd", coach:null, players:[] },
+  // Japan: confirmed squad (source: Wikipedia, announced May 15 2026)
+  "Japan": {
+    status: "confirmed",
+    coach: { name: "Hajime Moriyasu", country: "Japan", wiki: "/wiki/Hajime_Moriyasu" },
+    players: [
+      { pos:"GK", name:"Zion Suzuki",        club:"Parma",              cc:"Italy",        wiki:"/wiki/Zion_Suzuki" },
+      { pos:"GK", name:"Keisuke Ōsako",      club:"Sanfrecce Hiroshima",cc:"Japan",        wiki:"/wiki/Keisuke_Ōsako" },
+      { pos:"GK", name:"Tomoki Hayakawa",    club:"Kashima Antlers",    cc:"Japan",        wiki:"/wiki/Tomoki_Hayakawa" },
+      { pos:"DF", name:"Yūto Nagatomo",      club:"FC Tokyo",           cc:"Japan",        wiki:"/wiki/Yūto_Nagatomo" },
+      { pos:"DF", name:"Takehiro Tomiyasu",  club:"Ajax",               cc:"Netherlands",  wiki:"/wiki/Takehiro_Tomiyasu" },
+      { pos:"DF", name:"Kō Itakura",         club:"Ajax",               cc:"Netherlands",  wiki:"/wiki/Kō_Itakura" },
+      { pos:"DF", name:"Shōgo Taniguchi",    club:"Sint-Truiden",       cc:"Belgium",      wiki:"/wiki/Shōgo_Taniguchi" },
+      { pos:"DF", name:"Hiroki Itō",         club:"Bayern Munich",      cc:"Germany",      wiki:"/wiki/Hiroki_Itō_(footballer,_born_1999)" },
+      { pos:"DF", name:"Yukinari Sugawara",  club:"Werder Bremen",      cc:"Germany",      wiki:"/wiki/Yukinari_Sugawara" },
+      { pos:"DF", name:"Ayumu Seko",         club:"Le Havre",           cc:"France",       wiki:"/wiki/Ayumu_Seko" },
+      { pos:"DF", name:"Tsuyoshi Watanabe",  club:"Feyenoord",          cc:"Netherlands",  wiki:"/wiki/Tsuyoshi_Watanabe" },
+      { pos:"DF", name:"Junnosuke Suzuki",   club:"Copenhagen",         cc:"Denmark",      wiki:"/wiki/Junnosuke_Suzuki" },
+      { pos:"MF", name:"Wataru Endo",        club:"Liverpool",          cc:"England",      wiki:"/wiki/Wataru_Endo" },
+      { pos:"MF", name:"Junya Itō",          club:"Genk",               cc:"Belgium",      wiki:"/wiki/Junya_Itō" },
+      { pos:"MF", name:"Ritsu Dōan",         club:"Eintracht Frankfurt", cc:"Germany",     wiki:"/wiki/Ritsu_Dōan" },
+      { pos:"MF", name:"Daichi Kamada",      club:"Crystal Palace",     cc:"England",      wiki:"/wiki/Daichi_Kamada" },
+      { pos:"MF", name:"Takefusa Kubo",      club:"Real Sociedad",      cc:"Spain",        wiki:"/wiki/Takefusa_Kubo" },
+      { pos:"MF", name:"Ao Tanaka",          club:"Leeds United",       cc:"England",      wiki:"/wiki/Ao_Tanaka" },
+      { pos:"MF", name:"Keito Nakamura",     club:"Reims",              cc:"France",       wiki:"/wiki/Keito_Nakamura" },
+      { pos:"MF", name:"Kaishū Sano",        club:"Mainz 05",           cc:"Germany",      wiki:"/wiki/Kaishū_Sano" },
+      { pos:"FW", name:"Ayase Ueda",         club:"Feyenoord",          cc:"Netherlands",  wiki:"/wiki/Ayase_Ueda" },
+      { pos:"FW", name:"Daizen Maeda",       club:"Celtic",             cc:"Scotland",     wiki:"/wiki/Daizen_Maeda" },
+      { pos:"FW", name:"Kōki Ogawa",         club:"NEC Nijmegen",       cc:"Netherlands",  wiki:"/wiki/Kōki_Ogawa" },
+      { pos:"FW", name:"Yuito Suzuki",       club:"SC Freiburg",        cc:"Germany",      wiki:"/wiki/Yuito_Suzuki" },
+      { pos:"FW", name:"Keisuke Gotō",       club:"Sint-Truiden",       cc:"Belgium",      wiki:"/wiki/Keisuke_Gotō" },
+      { pos:"FW", name:"Kento Shiogai",      club:"VfL Wolfsburg",      cc:"Germany",      wiki:"/wiki/Kento_Shiogai" },
+    ]
+  },
+  // Sweden: confirmed squad (source: Wikipedia, May 2026)
+  "Sweden": {
+    status: "confirmed",
+    coach: { name: "Graham Potter", country: "England", wiki: "/wiki/Graham_Potter" },
+    players: [
+      { pos:"GK", name:"Kristoffer Nordfeldt",      club:"AIK",                    cc:"Sweden",       wiki:"/wiki/Kristoffer_Nordfeldt" },
+      { pos:"GK", name:"Viktor Johansson",          club:"Stoke City",             cc:"England",      wiki:"/wiki/Viktor_Johansson" },
+      { pos:"GK", name:"Jacob Widell Zetterström",  club:"Derby County",           cc:"England",      wiki:"/wiki/Jacob_Widell_Zetterstrom" },
+      { pos:"DF", name:"Victor Lindelöf",           club:"Aston Villa",            cc:"England",      wiki:"/wiki/Victor_Lindelof" },
+      { pos:"DF", name:"Isak Hien",                 club:"Atalanta",               cc:"Italy",        wiki:"/wiki/Isak_Hien" },
+      { pos:"DF", name:"Gabriel Gudmundsson",       club:"Leeds United",           cc:"England",      wiki:"/wiki/Gabriel_Gudmundsson" },
+      { pos:"DF", name:"Carl Starfelt",             club:"Celta Vigo",             cc:"Spain",        wiki:"/wiki/Carl_Starfelt" },
+      { pos:"DF", name:"Emil Holm",                 club:"Juventus",               cc:"Italy",        wiki:"/wiki/Emil_Holm" },
+      { pos:"DF", name:"Hjalmar Ekdal",             club:"Burnley",                cc:"England",      wiki:"/wiki/Hjalmar_Ekdal" },
+      { pos:"DF", name:"Daniel Svensson",           club:"Borussia Dortmund",      cc:"Germany",      wiki:"/wiki/Daniel_Svensson" },
+      { pos:"DF", name:"Gustaf Lagerbielke",        club:"Braga",                  cc:"Portugal",     wiki:"/wiki/Gustaf_Lagerbielke" },
+      { pos:"DF", name:"Eric Smith",                club:"FC St. Pauli",           cc:"Germany",      wiki:"/wiki/Eric_Smith" },
+      { pos:"DF", name:"Elliot Stroud",             club:"Mjällby AIF",            cc:"Sweden",       wiki:"/wiki/Elliot_Stroud" },
+      { pos:"MF", name:"Mattias Svanberg",          club:"VfL Wolfsburg",          cc:"Germany",      wiki:"/wiki/Mattias_Svanberg" },
+      { pos:"MF", name:"Jesper Karlström",          club:"Udinese",                cc:"Italy",        wiki:"/wiki/Jesper_Karlstrom" },
+      { pos:"MF", name:"Yasin Ayari",               club:"Brighton & Hove Albion", cc:"England",      wiki:"/wiki/Yasin_Ayari" },
+      { pos:"MF", name:"Lucas Bergvall",            club:"Tottenham Hotspur",      cc:"England",      wiki:"/wiki/Lucas_Bergvall" },
+      { pos:"MF", name:"Besfort Zeneli",            club:"Union Saint-Gilloise",   cc:"Belgium",      wiki:"/wiki/Besfort_Zeneli" },
+      { pos:"FW", name:"Alexander Isak",            club:"Liverpool",              cc:"England",      wiki:"/wiki/Alexander_Isak" },
+      { pos:"FW", name:"Viktor Gyökeres",           club:"Arsenal",                cc:"England",      wiki:"/wiki/Viktor_Gyokeres" },
+      { pos:"FW", name:"Ken Sema",                  club:"Pafos",                  cc:"Cyprus",       wiki:"/wiki/Ken_Sema" },
+      { pos:"FW", name:"Anthony Elanga",            club:"Newcastle United",       cc:"England",      wiki:"/wiki/Anthony_Elanga" },
+      { pos:"FW", name:"Benjamin Nygren",           club:"Celtic",                 cc:"Scotland",     wiki:"/wiki/Benjamin_Nygren" },
+      { pos:"FW", name:"Alexander Bernhardsson",    club:"Holstein Kiel",          cc:"Germany",      wiki:"/wiki/Alexander_Bernhardsson" },
+      { pos:"FW", name:"Gustaf Nilsson",            club:"Club Brugge",            cc:"Belgium",      wiki:"/wiki/Gustaf_Nilsson" },
+      { pos:"FW", name:"Taha Ali",                  club:"Malmö FF",               cc:"Sweden",       wiki:"/wiki/Taha_Ali" },
+    ]
+  },
+  // Tunisia: confirmed squad (source: Wikipedia, May 2026)
+  "Tunisia": {
+    status: "confirmed",
+    coach: { name: "Sabri Lamouchi", country: "France", wiki: "/wiki/Sabri_Lamouchi" },
+    players: [
+      { pos:"GK", name:"Aymen Dahmen",             club:"CS Sfaxien",          cc:"Tunisia",      wiki:"/wiki/Aymen_Dahmen" },
+      { pos:"GK", name:"Sabri Ben Hessen",         club:"Étoile du Sahel",     cc:"Tunisia",      wiki:"/wiki/Sabri_Ben_Hessen" },
+      { pos:"GK", name:"Mouhib Chamakh",           club:"Club Africain",       cc:"Tunisia",      wiki:"/wiki/Mouhib_Chamakh" },
+      { pos:"DF", name:"Montassar Talbi",          club:"Lorient",             cc:"France",       wiki:"/wiki/Montassar_Talbi" },
+      { pos:"DF", name:"Dylan Bronn",              club:"Servette",            cc:"Switzerland",  wiki:"/wiki/Dylan_Bronn" },
+      { pos:"DF", name:"Ali Abdi",                 club:"Nice",                cc:"France",       wiki:"/wiki/Ali_Abdi" },
+      { pos:"DF", name:"Yan Valery",               club:"Young Boys",          cc:"Switzerland",  wiki:"/wiki/Yan_Valery" },
+      { pos:"DF", name:"Mohamed Amine Ben Hamida", club:"Espérance de Tunis",  cc:"Tunisia",      wiki:"/wiki/Mohamed_Amine_Ben_Hamida" },
+      { pos:"DF", name:"Moutaz Neffati",           club:"IFK Norrköping",      cc:"Sweden",       wiki:"/wiki/Moutaz_Neffati" },
+      { pos:"DF", name:"Omar Rekik",               club:"Maribor",             cc:"Slovenia",     wiki:"/wiki/Omar_Rekik" },
+      { pos:"DF", name:"Adem Arous",               club:"Kasımpaşa",           cc:"Turkey",       wiki:"/wiki/Adem_Arous" },
+      { pos:"DF", name:"Raed Chikhaoui",           club:"US Monastir",         cc:"Tunisia",      wiki:"/wiki/Raed_Chikhaoui" },
+      { pos:"MF", name:"Ellyes Skhiri",            club:"Eintracht Frankfurt", cc:"Germany",      wiki:"/wiki/Ellyes_Skhiri" },
+      { pos:"MF", name:"Hannibal Mejbri",          club:"Burnley",             cc:"England",      wiki:"/wiki/Hannibal_Mejbri" },
+      { pos:"MF", name:"Anis Ben Slimane",         club:"Norwich City",        cc:"England",      wiki:"/wiki/Anis_Ben_Slimane" },
+      { pos:"MF", name:"Mortadha Ben Ouanes",      club:"Kasımpaşa",           cc:"Turkey",       wiki:"/wiki/Mortadha_Ben_Ouanes" },
+      { pos:"MF", name:"Ismaël Gharbi",            club:"FC Augsburg",         cc:"Germany",      wiki:"/wiki/Ismaël_Gharbi" },
+      { pos:"MF", name:"Hadj Mahmoud",             club:"Lugano",              cc:"Switzerland",  wiki:"/wiki/Hadj_Mahmoud" },
+      { pos:"MF", name:"Rani Khedira",             club:"Union Berlin",        cc:"Germany",      wiki:"/wiki/Rani_Khedira" },
+      { pos:"FW", name:"Elias Achouri",            club:"Copenhagen",          cc:"Denmark",      wiki:"/wiki/Elias_Achouri" },
+      { pos:"FW", name:"Firas Chaouat",            club:"Club Africain",       cc:"Tunisia",      wiki:"/wiki/Firas_Chaouat" },
+      { pos:"FW", name:"Hazem Mastouri",           club:"Dynamo Makhachkala",  cc:"Russia",       wiki:"/wiki/Hazem_Mastouri" },
+      { pos:"FW", name:"Elias Saad",               club:"Hannover 96",         cc:"Germany",      wiki:"/wiki/Elias_Saad" },
+      { pos:"FW", name:"Sebastian Tounekti",       club:"Celtic",              cc:"Scotland",     wiki:"/wiki/Sebastian_Tounekti" },
+      { pos:"FW", name:"Khalil Ayari",             club:"Paris Saint-Germain", cc:"France",       wiki:"/wiki/Khalil_Ayari" },
+      { pos:"FW", name:"Rayan Elloumi",            club:"Vancouver Whitecaps", cc:"Canada",       wiki:"/wiki/Rayan_Elloumi" },
+    ]
+  },
+  // Belgium: confirmed squad (source: Wikipedia, announced May 15 2026)
+  "Belgium": {
+    status: "confirmed",
+    coach: { name: "Rudi Garcia", country: "France", wiki: "/wiki/Rudi_Garcia" },
+    players: [
+      { pos:"GK", name:"Thibaut Courtois",        club:"Real Madrid",            cc:"Spain",        wiki:"/wiki/Thibaut_Courtois" },
+      { pos:"GK", name:"Senne Lammens",           club:"Manchester United",      cc:"England",      wiki:"/wiki/Senne_Lammens" },
+      { pos:"GK", name:"Mike Penders",            club:"Strasbourg",             cc:"France",       wiki:"/wiki/Mike_Penders" },
+      { pos:"DF", name:"Thomas Meunier",          club:"Lille",                  cc:"France",       wiki:"/wiki/Thomas_Meunier" },
+      { pos:"DF", name:"Timothy Castagne",        club:"Fulham",                 cc:"England",      wiki:"/wiki/Timothy_Castagne" },
+      { pos:"DF", name:"Arthur Theate",           club:"Eintracht Frankfurt",    cc:"Germany",      wiki:"/wiki/Arthur_Theate" },
+      { pos:"DF", name:"Zeno Debast",             club:"Sporting CP",            cc:"Portugal",     wiki:"/wiki/Zeno_Debast" },
+      { pos:"DF", name:"Maxim De Cuyper",         club:"Brighton & Hove Albion", cc:"England",      wiki:"/wiki/Maxim_De_Cuyper" },
+      { pos:"DF", name:"Brandon Mechele",         club:"Club Brugge",            cc:"Belgium",      wiki:"/wiki/Brandon_Mechele" },
+      { pos:"DF", name:"Koni De Winter",          club:"AC Milan",               cc:"Italy",        wiki:"/wiki/Koni_De_Winter" },
+      { pos:"DF", name:"Joaquin Seys",            club:"Club Brugge",            cc:"Belgium",      wiki:"/wiki/Joaquin_Seys" },
+      { pos:"DF", name:"Nathan Ngoy",             club:"Lille",                  cc:"France",       wiki:"/wiki/Nathan_Ngoy" },
+      { pos:"MF", name:"Axel Witsel",             club:"Girona",                 cc:"Spain",        wiki:"/wiki/Axel_Witsel" },
+      { pos:"MF", name:"Kevin De Bruyne",         club:"SSC Napoli",             cc:"Italy",        wiki:"/wiki/Kevin_De_Bruyne" },
+      { pos:"MF", name:"Youri Tielemans",         club:"Aston Villa",            cc:"England",      wiki:"/wiki/Youri_Tielemans" },
+      { pos:"MF", name:"Hans Vanaken",            club:"Club Brugge",            cc:"Belgium",      wiki:"/wiki/Hans_Vanaken" },
+      { pos:"MF", name:"Amadou Onana",            club:"Aston Villa",            cc:"England",      wiki:"/wiki/Amadou_Onana" },
+      { pos:"MF", name:"Nicolas Raskin",          club:"Rangers",                cc:"Scotland",     wiki:"/wiki/Nicolas_Raskin" },
+      { pos:"FW", name:"Romelu Lukaku",           club:"SSC Napoli",             cc:"Italy",        wiki:"/wiki/Romelu_Lukaku" },
+      { pos:"FW", name:"Leandro Trossard",        club:"Arsenal",                cc:"England",      wiki:"/wiki/Leandro_Trossard" },
+      { pos:"FW", name:"Jérémy Doku",             club:"Manchester City",        cc:"England",      wiki:"/wiki/Jeremy_Doku" },
+      { pos:"FW", name:"Dodi Lukébakio",          club:"SL Benfica",             cc:"Portugal",     wiki:"/wiki/Dodi_Lukebakio" },
+      { pos:"FW", name:"Charles De Ketelaere",    club:"Atalanta",               cc:"Italy",        wiki:"/wiki/Charles_De_Ketelaere" },
+      { pos:"FW", name:"Alexis Saelemaekers",     club:"AC Milan",               cc:"Italy",        wiki:"/wiki/Alexis_Saelemaekers" },
+      { pos:"FW", name:"Diego Moreira",           club:"Strasbourg",             cc:"France",       wiki:"/wiki/Diego_Moreira" },
+      { pos:"FW", name:"Matias Fernandez-Pardo",  club:"Lille",                  cc:"France",       wiki:"/wiki/Matias_Fernandez-Pardo" },
+    ]
+  },
+  "Egypt":          { status:"tbd", coach:null, players:[] },
+  "Iran":           { status:"tbd", coach:null, players:[] },
+  // New Zealand: confirmed squad with jersey numbers (source: Wikipedia, announced May 14 2026)
+  "New Zealand": {
+    status: "confirmed",
+    coach: { name: "Darren Bazeley", country: "England", wiki: "/wiki/Darren_Bazeley" },
+    players: [
+      { pos:"GK", name:"Max Crocombe",          club:"Millwall",                  cc:"England",      wiki:"/wiki/Max_Crocombe" },
+      { pos:"DF", name:"Tim Payne",             club:"Wellington Phoenix",         cc:"New Zealand",  wiki:"/wiki/Tim_Payne_(footballer)" },
+      { pos:"DF", name:"Francis de Vries",      club:"Auckland FC",               cc:"New Zealand",  wiki:"/wiki/Francis_de_Vries" },
+      { pos:"DF", name:"Tyler Bindon",          club:"Sheffield United",          cc:"England",      wiki:"/wiki/Tyler_Bindon" },
+      { pos:"DF", name:"Michael Boxall",        club:"Minnesota United",          cc:"United States",wiki:"/wiki/Michael_Boxall" },
+      { pos:"MF", name:"Joe Bell",              club:"Viking FK",                 cc:"Norway",       wiki:"/wiki/Joe_Bell_(footballer)" },
+      { pos:"MF", name:"Matthew Garbett",       club:"Peterborough United",       cc:"England",      wiki:"/wiki/Matthew_Garbett" },
+      { pos:"MF", name:"Marko Stamenić",        club:"Swansea City",              cc:"Wales",        wiki:"/wiki/Marko_Stamenic" },
+      { pos:"FW", name:"Chris Wood",            club:"Nottingham Forest",         cc:"England",      wiki:"/wiki/Chris_Wood_(footballer,_born_1991)" },
+      { pos:"MF", name:"Sarpreet Singh",        club:"Wellington Phoenix",         cc:"New Zealand",  wiki:"/wiki/Sarpreet_Singh" },
+      { pos:"MF", name:"Elijah Just",           club:"Motherwell",                cc:"Scotland",     wiki:"/wiki/Elijah_Just" },
+      { pos:"GK", name:"Alex Paulsen",          club:"Lechia Gdańsk",             cc:"Poland",       wiki:"/wiki/Alex_Paulsen" },
+      { pos:"DF", name:"Liberato Cacace",       club:"Wrexham",                   cc:"Wales",        wiki:"/wiki/Liberato_Cacace" },
+      { pos:"MF", name:"Alex Rufer",            club:"Wellington Phoenix",         cc:"New Zealand",  wiki:"/wiki/Alex_Rufer" },
+      { pos:"DF", name:"Nando Pijnaker",        club:"Auckland FC",               cc:"New Zealand",  wiki:"/wiki/Nando_Pijnaker" },
+      { pos:"DF", name:"Finn Surman",           club:"Portland Timbers",          cc:"United States",wiki:"/wiki/Finn_Surman" },
+      { pos:"FW", name:"Kosta Barbarouses",     club:"Western Sydney Wanderers",  cc:"Australia",    wiki:"/wiki/Kosta_Barbarouses" },
+      { pos:"FW", name:"Ben Waine",             club:"Port Vale",                 cc:"England",      wiki:"/wiki/Ben_Waine" },
+      { pos:"MF", name:"Ben Old",               club:"Saint-Étienne",             cc:"France",       wiki:"/wiki/Ben_Old" },
+      { pos:"MF", name:"Callum McCowatt",       club:"Silkeborg",                 cc:"Denmark",      wiki:"/wiki/Callum_McCowatt" },
+      { pos:"FW", name:"Jesse Randall",         club:"Auckland FC",               cc:"New Zealand",  wiki:"/wiki/Jesse_Randall" },
+      { pos:"GK", name:"Michael Woud",          club:"Auckland FC",               cc:"New Zealand",  wiki:"/wiki/Michael_Woud" },
+      { pos:"MF", name:"Ryan Thomas",           club:"PEC Zwolle",                cc:"Netherlands",  wiki:"/wiki/Ryan_Thomas_(footballer)" },
+      { pos:"DF", name:"Callan Elliot",         club:"Auckland FC",               cc:"New Zealand",  wiki:"/wiki/Callan_Elliot" },
+      { pos:"MF", name:"Lachlan Bayliss",       club:"Newcastle Jets",            cc:"Australia",    wiki:"/wiki/Lachlan_Bayliss" },
+      { pos:"DF", name:"Tommy Smith",           club:"Braintree Town",            cc:"England",      wiki:"/wiki/Tommy_Smith_(footballer,_born_1990)" },
+    ]
+  },
+  "Spain":          { status:"tbd", coach:null, players:[] },
+  "Uruguay":        { status:"tbd", coach:null, players:[] },
+  "Saudi Arabia":   { status:"tbd", coach:null, players:[] },
+  "Cape Verde":     { status:"tbd", coach:null, players:[] },
+  // France: confirmed squad (source: Wikipedia, announced May 14 2026)
+  "France": {
+    status: "confirmed",
+    coach: { name: "Didier Deschamps", country: "France", wiki: "/wiki/Didier_Deschamps" },
+    players: [
+      { pos:"GK", name:"Mike Maignan",          club:"AC Milan",               cc:"Italy",        wiki:"/wiki/Mike_Maignan" },
+      { pos:"GK", name:"Brice Samba",           club:"Stade Rennais",          cc:"France",       wiki:"/wiki/Brice_Samba" },
+      { pos:"GK", name:"Robin Risser",          club:"RC Lens",                cc:"France",       wiki:"/wiki/Robin_Risser" },
+      { pos:"DF", name:"Lucas Digne",           club:"Aston Villa",            cc:"England",      wiki:"/wiki/Lucas_Digne" },
+      { pos:"DF", name:"Jules Koundé",          club:"FC Barcelona",           cc:"Spain",        wiki:"/wiki/Jules_Koundé" },
+      { pos:"DF", name:"Théo Hernandez",        club:"Al Hilal",               cc:"Saudi Arabia", wiki:"/wiki/Théo_Hernandez" },
+      { pos:"DF", name:"Lucas Hernandez",       club:"Paris Saint-Germain",    cc:"France",       wiki:"/wiki/Lucas_Hernandez" },
+      { pos:"DF", name:"Dayot Upamecano",       club:"Bayern Munich",          cc:"Germany",      wiki:"/wiki/Dayot_Upamecano" },
+      { pos:"DF", name:"William Saliba",        club:"Arsenal",                cc:"England",      wiki:"/wiki/William_Saliba" },
+      { pos:"DF", name:"Ibrahima Konate",       club:"Liverpool",              cc:"England",      wiki:"/wiki/Ibrahima_Konate" },
+      { pos:"DF", name:"Malo Gusto",            club:"Chelsea",                cc:"England",      wiki:"/wiki/Malo_Gusto" },
+      { pos:"DF", name:"Maxence Lacroix",       club:"Crystal Palace",         cc:"England",      wiki:"/wiki/Maxence_Lacroix" },
+      { pos:"MF", name:"N'Golo Kanté",          club:"Fenerbahçe",             cc:"Turkey",       wiki:"/wiki/N'Golo_Kanté" },
+      { pos:"MF", name:"Adrien Rabiot",         club:"AC Milan",               cc:"Italy",        wiki:"/wiki/Adrien_Rabiot" },
+      { pos:"MF", name:"Aurélien Tchouaméni",   club:"Real Madrid",            cc:"Spain",        wiki:"/wiki/Aurélien_Tchouaméni" },
+      { pos:"MF", name:"Manu Koné",             club:"AS Roma",                cc:"Italy",        wiki:"/wiki/Manu_Koné" },
+      { pos:"MF", name:"Warren Zaïre-Emery",    club:"Paris Saint-Germain",    cc:"France",       wiki:"/wiki/Warren_Zaïre-Emery" },
+      { pos:"FW", name:"Kylian Mbappé",         club:"Real Madrid",            cc:"Spain",        wiki:"/wiki/Kylian_Mbappé" },
+      { pos:"FW", name:"Ousmane Dembélé",       club:"Paris Saint-Germain",    cc:"France",       wiki:"/wiki/Ousmane_Dembélé" },
+      { pos:"FW", name:"Marcus Thuram",         club:"Inter Milan",            cc:"Italy",        wiki:"/wiki/Marcus_Thuram" },
+      { pos:"FW", name:"Bradley Barcola",       club:"Paris Saint-Germain",    cc:"France",       wiki:"/wiki/Bradley_Barcola" },
+      { pos:"FW", name:"Michael Olise",         club:"Bayern Munich",          cc:"Germany",      wiki:"/wiki/Michael_Olise" },
+      { pos:"FW", name:"Maghnes Akliouche",     club:"AS Monaco",              cc:"France",       wiki:"/wiki/Maghnes_Akliouche" },
+      { pos:"FW", name:"Désiré Doué",           club:"Paris Saint-Germain",    cc:"France",       wiki:"/wiki/Désiré_Doué" },
+      { pos:"FW", name:"Rayan Cherki",          club:"Manchester City",        cc:"England",      wiki:"/wiki/Rayan_Cherki" },
+      { pos:"FW", name:"Jean-Philippe Mateta",  club:"Crystal Palace",         cc:"England",      wiki:"/wiki/Jean-Philippe_Mateta" },
+    ]
+  },
+  "Senegal":        { status:"tbd", coach:null, players:[] },
+  "Norway":         { status:"tbd", coach:null, players:[] },
+  "Iraq":           { status:"tbd", coach:null, players:[] },
+  "Argentina":      { status:"tbd", coach:null, players:[] },
+  "Austria":        { status:"tbd", coach:null, players:[] },
+  "Algeria":        { status:"tbd", coach:null, players:[] },
+  "Jordan":         { status:"tbd", coach:null, players:[] },
+  "Portugal":       { status:"tbd", coach:null, players:[] },
+  "Colombia":       { status:"tbd", coach:null, players:[] },
+  "DR Congo":       { status:"tbd", coach:null, players:[] },
+  "Uzbekistan":     { status:"tbd", coach:null, players:[] },
+  "England":        { status:"tbd", coach:null, players:[] },
+  "Croatia":        { status:"tbd", coach:null, players:[] },
+  "Ghana":          { status:"tbd", coach:null, players:[] },
+  "Panama":         { status:"tbd", coach:null, players:[] },
+};
+
+// ═══════════════════════════════════════════════════════
 //  MATCH DATA
 //  [utcISO, team1, team2, venue, city, round, matchday]
-//  round: A–L = group stage group, R32/R16/QF/SF/3P/F = knockout
 // ═══════════════════════════════════════════════════════
 const M = [
-// ── GROUP STAGE MATCHDAY 1 ─────────────────────────────
 ["2026-06-11T19:00Z","Mexico","South Africa","Estadio Azteca","Mexico City","A",1],
 ["2026-06-12T02:00Z","South Korea","Czechia","Estadio Akron","Zapopan","A",1],
 ["2026-06-12T19:00Z","Canada","Bosnia & Herzegovina","BMO Field","Toronto","B",1],
@@ -382,7 +1016,6 @@ const M = [
 ["2026-06-17T20:00Z","England","Croatia","AT&T Stadium","Arlington","L",1],
 ["2026-06-17T23:00Z","Ghana","Panama","BMO Field","Toronto","L",1],
 ["2026-06-18T02:00Z","Uzbekistan","Colombia","Estadio Azteca","Mexico City","K",1],
-// ── GROUP STAGE MATCHDAY 2 ─────────────────────────────
 ["2026-06-18T16:00Z","Czechia","South Africa","Mercedes-Benz Stadium","Atlanta","A",2],
 ["2026-06-18T19:00Z","Switzerland","Bosnia & Herzegovina","SoFi Stadium","Los Angeles","B",2],
 ["2026-06-18T22:00Z","Canada","Qatar","BC Place","Vancouver","B",2],
@@ -407,7 +1040,6 @@ const M = [
 ["2026-06-23T20:00Z","England","Ghana","Gillette Stadium","Foxborough","L",2],
 ["2026-06-23T23:00Z","Panama","Croatia","Lincoln Financial Field","Philadelphia","L",2],
 ["2026-06-24T02:00Z","Colombia","DR Congo","Estadio Akron","Zapopan","K",2],
-// ── GROUP STAGE MATCHDAY 3 (simultaneous pairs) ────────
 ["2026-06-24T19:00Z","Switzerland","Canada","BC Place","Vancouver","B",3],
 ["2026-06-24T19:00Z","Bosnia & Herzegovina","Qatar","Lumen Field","Seattle","B",3],
 ["2026-06-24T22:00Z","Morocco","Haiti","Mercedes-Benz Stadium","Atlanta","C",3],
@@ -432,7 +1064,6 @@ const M = [
 ["2026-06-27T23:30Z","DR Congo","Uzbekistan","Mercedes-Benz Stadium","Atlanta","K",3],
 ["2026-06-28T02:00Z","Algeria","Austria","Arrowhead Stadium","Kansas City","J",3],
 ["2026-06-28T02:00Z","Jordan","Argentina","AT&T Stadium","Arlington","J",3],
-// ── ROUND OF 32 ───────────────────────────────────────
 ["2026-06-28T19:00Z","Group A 2nd","Group B 2nd","SoFi Stadium","Los Angeles","R32",0],
 ["2026-06-29T17:00Z","Group C 1st","Group F 2nd","NRG Stadium","Houston","R32",0],
 ["2026-06-29T20:30Z","Group E 1st","Best 3rd Place","Gillette Stadium","Foxborough","R32",0],
@@ -449,7 +1080,6 @@ const M = [
 ["2026-07-03T18:00Z","Group D 2nd","Group G 2nd","AT&T Stadium","Arlington","R32",0],
 ["2026-07-03T22:00Z","Group J 1st","Group H 2nd","Hard Rock Stadium","Miami","R32",0],
 ["2026-07-04T01:30Z","Group K 1st","Best 3rd Place","Arrowhead Stadium","Kansas City","R32",0],
-// ── ROUND OF 16 ───────────────────────────────────────
 ["2026-07-04T17:00Z","R32 M1 Winner","R32 M3 Winner","NRG Stadium","Houston","R16",0],
 ["2026-07-04T21:00Z","R32 M2 Winner","R32 M5 Winner","Lincoln Financial Field","Philadelphia","R16",0],
 ["2026-07-05T20:00Z","R32 M4 Winner","R32 M6 Winner","MetLife Stadium","New Jersey","R16",0],
@@ -458,21 +1088,18 @@ const M = [
 ["2026-07-07T00:00Z","R32 M9 Winner","R32 M10 Winner","Lumen Field","Seattle","R16",0],
 ["2026-07-07T16:00Z","R32 M14 Winner","R32 M16 Winner","Mercedes-Benz Stadium","Atlanta","R16",0],
 ["2026-07-07T20:00Z","R32 M13 Winner","R32 M15 Winner","BC Place","Vancouver","R16",0],
-// ── QUARTER-FINALS ────────────────────────────────────
 ["2026-07-09T20:00Z","R16 Match Winner","R16 Match Winner","Gillette Stadium","Foxborough","QF",0],
 ["2026-07-10T19:00Z","R16 Match Winner","R16 Match Winner","SoFi Stadium","Los Angeles","QF",0],
 ["2026-07-11T21:00Z","R16 Match Winner","R16 Match Winner","Hard Rock Stadium","Miami","QF",0],
 ["2026-07-12T01:00Z","R16 Match Winner","R16 Match Winner","Arrowhead Stadium","Kansas City","QF",0],
-// ── SEMI-FINALS ───────────────────────────────────────
 ["2026-07-14T19:00Z","QF Winner","QF Winner","AT&T Stadium","Arlington","SF",0],
 ["2026-07-15T19:00Z","QF Winner","QF Winner","Mercedes-Benz Stadium","Atlanta","SF",0],
-// ── 3RD PLACE + FINAL ─────────────────────────────────
 ["2026-07-18T21:00Z","3rd Place TBD","3rd Place TBD","Hard Rock Stadium","Miami","3P",0],
 ["2026-07-19T19:00Z","Champion TBD","Champion TBD","MetLife Stadium","New Jersey","F",0],
 ];
 
 // ═══════════════════════════════════════════════════════
-//  TIMEZONE — auto-detect, allow override
+//  TIMEZONE
 // ═══════════════════════════════════════════════════════
 let userTZ = localStorage.getItem('wc26_tz') || Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -503,9 +1130,7 @@ function applyTZ() {
     document.getElementById('tzInput').value = '';
     updateTzUI();
     render();
-  } catch {
-    errEl.style.display = 'block';
-  }
+  } catch { errEl.style.display = 'block'; }
 }
 
 function focusTzInput() {
@@ -517,16 +1142,19 @@ function focusTzInput() {
 // ═══════════════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════════════
-let favs   = new Set(JSON.parse(localStorage.getItem('wc26_favs') || '[]'));
-let startM = +localStorage.getItem('wc26_s') || 300;   // 5 * 60
-let endM   = +localStorage.getItem('wc26_e') || 1320;  // 22 * 60
+let favs    = new Set(JSON.parse(localStorage.getItem('wc26_favs') || '[]'));
+let startM  = +localStorage.getItem('wc26_s') || 300;
+let endM    = +localStorage.getItem('wc26_e') || 1320;
 let showOk  = false;
 let showFav = false;
-let filterVal = '';
-let panelOpen = false;
+let filterVal  = '';
+let panelOpen  = false;
+let activeTab  = 'matches';
+let openGroups = new Set();
+let openTeams  = new Set();
 
 // ═══════════════════════════════════════════════════════
-//  HELPERS
+//  TIME HELPERS
 // ═══════════════════════════════════════════════════════
 function localMins(utcISO) {
   try {
@@ -538,35 +1166,25 @@ function localMins(utcISO) {
     return (h === 24 ? 0 : h) * 60 + m;
   } catch { return 0; }
 }
-
-function isOk(utcISO) {
-  const m = localMins(utcISO);
-  return m >= startM && m <= endM;
-}
-
+function isOk(utcISO) { const m = localMins(utcISO); return m >= startM && m <= endM; }
 function fmtTime(utcISO) {
   return new Intl.DateTimeFormat('en', {
     timeZone: userTZ, hour: 'numeric', minute: '2-digit', hour12: true
   }).format(new Date(utcISO));
 }
-
 function fmtDate(utcISO) {
   return new Intl.DateTimeFormat('en', {
     timeZone: userTZ, weekday: 'short', month: 'short', day: 'numeric'
   }).format(new Date(utcISO));
 }
-
 function localDateKey(utcISO) {
   return new Intl.DateTimeFormat('en-CA', { timeZone: userTZ }).format(new Date(utcISO));
 }
-
 function isGroup(r) { return r.length === 1; }
-
 function roundLabel(r, md) {
   if (isGroup(r)) return `Group ${r} &nbsp;·&nbsp; MD${md}`;
   return {R32:'Round of 32',R16:'Round of 16',QF:'Quarter-Final',SF:'Semi-Final','3P':'3rd Place','F':'THE FINAL'}[r] || r;
 }
-
 function badgeClass(r) {
   if (r === 'F') return 'badge final';
   if (isGroup(r)) return 'badge grp';
@@ -574,7 +1192,142 @@ function badgeClass(r) {
 }
 
 // ═══════════════════════════════════════════════════════
-//  RENDER TEAMS PANEL
+//  SQUAD HELPERS
+// ═══════════════════════════════════════════════════════
+function statusLabel(s) {
+  if (s === 'confirmed')  return '<span class="t-status confirmed">Confirmed</span>';
+  if (s === 'provisional') return '<span class="t-status provisional">Provisional</span>';
+  return '<span class="t-status tbd">TBD</span>';
+}
+
+function coachHTML(sq) {
+  if (!sq.coach) return '';
+  const c = sq.coach;
+  const name = c.wiki
+    ? `<a href="https://en.wikipedia.org${c.wiki}" target="_blank" rel="noopener">${c.name}</a>`
+    : c.name;
+  return `<div class="coach-row">
+    <span class="coach-label">Coach</span>
+    <span class="coach-country">${clubFlag(c.country)}</span>
+    <span class="coach-name">${name}</span>
+  </div>`;
+}
+
+function playerTableHTML(sq) {
+  if (!sq.players.length) {
+    return `<div class="squad-tbd">Squad not yet available · Check back after June 2</div>`;
+  }
+  let rows = '';
+  for (const p of sq.players) {
+    const name = p.wiki
+      ? `<a href="https://en.wikipedia.org${p.wiki}" target="_blank" rel="noopener">${p.name}</a>`
+      : p.name;
+    const cf = clubFlag(p.cc);
+    const logoImg = `<img class="club-logo-img" src="https://api.sofascore.app/api/v1/team/search?q=${encodeURIComponent(p.club)}" onerror="this.style.display='none'" loading="lazy">`;
+    rows += `<tr>
+      <td><span class="pos-badge ${p.pos}">${p.pos}</span></td>
+      <td class="player-name">${name}</td>
+      <td><div class="club-cell">${cf} ${p.club}</div></td>
+    </tr>`;
+  }
+  const note = sq.status === 'provisional'
+    ? `<div style="font-family:'Teko',sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);padding:8px 0 4px">⚠ Provisional squad — final 26 confirmed June 2</div>`
+    : '';
+  return `${note}<table class="player-table">
+    <thead><tr>
+      <th>Pos</th><th>Player</th><th>Club</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  TAB SWITCHING
+// ═══════════════════════════════════════════════════════
+function switchTab(tab) {
+  activeTab = tab;
+  document.getElementById('matchesView').style.display = tab === 'matches' ? '' : 'none';
+  document.getElementById('squadsView').style.display  = tab === 'squads'  ? '' : 'none';
+  document.getElementById('tabMatches').classList.toggle('active', tab === 'matches');
+  document.getElementById('tabSquads').classList.toggle('active', tab === 'squads');
+  if (tab === 'squads') renderSquadsView();
+}
+
+// ═══════════════════════════════════════════════════════
+//  SQUADS VIEW
+// ═══════════════════════════════════════════════════════
+function renderSquadsView() {
+  let html = '';
+  for (const [g, teams] of Object.entries(GROUPS)) {
+    const isOpen = openGroups.has(g);
+    html += `<div class="squad-group">
+      <div class="squad-group-hdr ${isOpen?'open':''}" onclick="toggleSquadGroup('${g}')">
+        <span class="grp-label">Group ${g}</span>
+        <span class="grp-teams">${teams.join(' · ')}</span>
+        <span class="grp-arrow">▶</span>
+      </div>
+      <div class="squad-group-body ${isOpen?'open':''}">`;
+    for (const team of teams) {
+      const sq = SQUADS[team] || { status:'tbd', coach:null, players:[] };
+      const tid = `${g}_${team.replace(/[^a-zA-Z]/g,'_')}`;
+      const isTeamOpen = openTeams.has(tid);
+      html += `<div class="squad-team-row">
+        <div class="squad-team-hdr ${isTeamOpen?'open':''}" onclick="toggleSquadTeam('${tid}')">
+          <span class="t-flag">${FLAG[team]||'🌍'}</span>
+          <span class="t-name">${team}</span>
+          ${statusLabel(sq.status)}
+          <span class="t-arrow">▶</span>
+        </div>
+        <div class="squad-team-body ${isTeamOpen?'open':''}" id="stb_${tid}">
+          ${coachHTML(sq)}
+          ${playerTableHTML(sq)}
+        </div>
+      </div>`;
+    }
+    html += `</div></div>`;
+  }
+  document.getElementById('squadsMain').innerHTML = html;
+}
+
+function toggleSquadGroup(g) {
+  openGroups.has(g) ? openGroups.delete(g) : openGroups.add(g);
+  renderSquadsView();
+}
+
+function toggleSquadTeam(tid) {
+  openTeams.has(tid) ? openTeams.delete(tid) : openTeams.add(tid);
+  renderSquadsView();
+}
+
+// ═══════════════════════════════════════════════════════
+//  SQUAD MODAL (match card)
+// ═══════════════════════════════════════════════════════
+function openSquadModal(team) {
+  const sq = SQUADS[team] || { status:'tbd', coach:null, players:[] };
+  const statusEl = sq.status === 'confirmed'
+    ? '<span class="m-status confirmed">Confirmed</span>'
+    : sq.status === 'provisional'
+    ? '<span class="m-status provisional">Provisional</span>'
+    : '<span class="m-status tbd">TBD</span>';
+
+  document.getElementById('modalHdr').innerHTML = `
+    <span class="m-flag">${FLAG[team]||'🌍'}</span>
+    <span class="m-team">${team}</span>
+    ${statusEl}`;
+  document.getElementById('modalBody').innerHTML = coachHTML(sq) + playerTableHTML(sq);
+  document.getElementById('squadModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('squadModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ═══════════════════════════════════════════════════════
+//  TEAMS PANEL
 // ═══════════════════════════════════════════════════════
 function renderPanel() {
   const g = document.getElementById('teamsGrid');
@@ -603,9 +1356,9 @@ function render() {
 
   const totalGood = M.filter(m => isOk(m[0])).length;
   const totalTeam = M.filter(m => favs.has(m[1]) || favs.has(m[2])).length;
-  document.getElementById('sGood').textContent = totalGood;
-  document.getElementById('sBad').textContent = 104 - totalGood;
-  document.getElementById('sTeam').textContent = totalTeam;
+  document.getElementById('sGood').textContent  = totalGood;
+  document.getElementById('sBad').textContent   = 104 - totalGood;
+  document.getElementById('sTeam').textContent  = totalTeam;
   document.getElementById('sShown').textContent = list.length;
 
   if (!list.length) {
@@ -638,6 +1391,9 @@ function render() {
       const cls2 = favs.has(m.t2) ? ' myfav' : '';
       const cardCls = `card ${m.ok?'ok':'bad'}${m.hasFav?' fav':''}`;
       const utcHr = new Date(m.utc).toISOString().slice(11,16) + ' UTC';
+      // Only show squad link for real teams (not placeholder bracket text)
+      const hasSquad1 = FLAG[m.t1];
+      const hasSquad2 = FLAG[m.t2];
 
       html += `<div class="${cardCls}">
         <div>
@@ -647,9 +1403,19 @@ function render() {
             ${m.hasFav ? '<span class="fav-star">⭐</span>' : ''}
           </div>
           <div class="teams">
-            <div class="team${cls1}">${f1?`<span class="flag">${f1}</span>`:''}${m.t1}</div>
+            <div class="team${cls1}">
+              ${f1?`<span class="flag">${f1}</span>`:''}
+              ${hasSquad1
+                ? `<span class="team-link" onclick="openSquadModal('${m.t1.replace(/'/g,"\\\'")}')">${m.t1}</span>`
+                : `<span>${m.t1}</span>`}
+            </div>
             <div class="vs">VS</div>
-            <div class="team right${cls2}">${m.t2}${f2?`<span class="flag">${f2}</span>`:''}</div>
+            <div class="team right${cls2}">
+              ${hasSquad2
+                ? `<span class="team-link" onclick="openSquadModal('${m.t2.replace(/'/g,"\\\'")}')">${m.t2}</span>`
+                : `<span>${m.t2}</span>`}
+              ${f2?`<span class="flag">${f2}</span>`:''}
+            </div>
           </div>
           <div class="venue"><b>${m.venue}</b>, ${m.city} &nbsp;·&nbsp; ${utcHr}</div>
         </div>
@@ -693,9 +1459,7 @@ function togglePanel() {
   document.getElementById('btnPanel').classList.toggle('on', panelOpen);
 }
 
-document.getElementById('tzInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') applyTZ();
-});
+document.getElementById('tzInput').addEventListener('keydown', e => { if (e.key === 'Enter') applyTZ(); });
 
 const pad = n => String(n).padStart(2,'0');
 document.getElementById('tStart').value = `${pad(Math.floor(startM/60))}:${pad(startM%60)}`;
@@ -703,20 +1467,13 @@ document.getElementById('tEnd').value   = `${pad(Math.floor(endM/60))}:${pad(end
 
 document.getElementById('tStart').addEventListener('change', e => {
   const [h,m] = e.target.value.split(':').map(Number);
-  startM = h*60+m;
-  localStorage.setItem('wc26_s', startM);
-  render();
+  startM = h*60+m; localStorage.setItem('wc26_s', startM); render();
 });
 document.getElementById('tEnd').addEventListener('change', e => {
   const [h,m] = e.target.value.split(':').map(Number);
-  endM = h*60+m;
-  localStorage.setItem('wc26_e', endM);
-  render();
+  endM = h*60+m; localStorage.setItem('wc26_e', endM); render();
 });
-document.getElementById('filterSel').addEventListener('change', e => {
-  filterVal = e.target.value;
-  render();
-});
+document.getElementById('filterSel').addEventListener('change', e => { filterVal = e.target.value; render(); });
 
 // boot
 updateTzUI();
