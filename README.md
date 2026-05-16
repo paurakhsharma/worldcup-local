@@ -1,14 +1,15 @@
-# FIFA World Cup 2026 · Nepal Time Guide ⚽🇳🇵
+# FIFA World Cup 2026 · Local Time Guide ⚽🌍
 
-Single-file HTML app showing all 104 FIFA World Cup 2026 matches in **Nepal Standard Time (UTC+5:45)** — with filters for favorable viewing hours, favorite teams, and more.
+Single-file HTML app showing all 104 FIFA World Cup 2026 matches in **your local timezone** — auto-detected from your browser, with filters for favorable viewing hours, favorite teams, and more.
 
 ## Features
 
 - **All 104 matches** — complete group stage (72) + Round of 32 → Final
-- **Nepal Time** — every kickoff converted to NPT (UTC+5:45) automatically
+- **Auto timezone detection** — kickoff times converted to your local timezone via browser's `Intl` API
+- **Manual timezone override** — type any IANA timezone (e.g. `Asia/Tokyo`, `Europe/London`) to switch
 - **Favorable window filter** — default 5:00 AM–10:00 PM, fully editable and saved in localStorage
 - **Favorite teams** — pick your teams, filter to their matches, highlighted in gold
-- **Color coding** — green cards = good time, red = late night
+- **Color coding** — green cards = good time, red = late night/early morning
 - **Group/round filter** — browse by group (A–L) or knockout round
 - **Stats bar** — count of favorable matches, late-night matches, and your team's games
 - **Fully offline** — no server, no framework, no build step
@@ -44,18 +45,18 @@ Single-file HTML app showing all 104 FIFA World Cup 2026 matches in **Nepal Stan
 
 Open `index.html` in any browser. No installation needed.
 
-To share with friends — just send the `index.html` file. Preferences (favorite teams, time window) are saved per-browser via `localStorage`.
+- Timezone auto-detected on load — shown in the header pill
+- Click the pill or use the **Timezone (IANA)** input in controls to override
+- Preferences (timezone, favorite teams, time window) saved per-browser via `localStorage`
 
-## Time Zone Reference
+## Timezone Support
 
-Nepal is UTC+5:45. Many matches from North America kick off late at night in Nepal.
+Uses the browser's built-in `Intl.DateTimeFormat` API — works for every timezone worldwide, handles DST automatically.
 
 ```
-UTC 00:00  →  05:45 NPT  ✓ early morning
-UTC 08:00  →  13:45 NPT  ✓ afternoon
-UTC 14:00  →  19:45 NPT  ✓ evening
-UTC 17:00  →  22:45 NPT  ✗ after 10 PM
-UTC 20:00  →  01:45 NPT  ✗ past midnight
+Auto-detected:  Intl.DateTimeFormat().resolvedOptions().timeZone
+Override:       type any IANA name → e.g. "Asia/Kathmandu", "America/Sao_Paulo"
+Persisted:      localStorage key wc26_tz
 ```
 
 ## Data Sources

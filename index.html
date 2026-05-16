@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FIFA World Cup 2026 · Nepal Time Guide</title>
+<title>FIFA World Cup 2026 · Local Time Guide</title>
 <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600;700&family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -17,7 +17,7 @@
   --red: #f43f5e;
   --red-glow: rgba(244,63,94,0.1);
   --gold: #f59e0b;
-  --nepal: #dc143c;
+  --accent: #3b82f6;
   --text: #e0e7ff;
   --muted: #4a6080;
   --muted2: #6b8aaa;
@@ -52,13 +52,14 @@ header::before{
   font-family:'Teko',sans-serif;font-size:1rem;letter-spacing:0.25em;
   text-transform:uppercase;color:var(--muted2);margin-top:6px;
 }
-.nepal-pill{
+.tz-pill{
   display:inline-flex;align-items:center;gap:8px;
-  background:rgba(220,20,60,0.12);border:1px solid rgba(220,20,60,0.3);
+  background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);
   border-radius:100px;padding:5px 18px;margin-top:14px;
   font-family:'Teko',sans-serif;font-size:1rem;letter-spacing:0.15em;
-  text-transform:uppercase;color:#ff8fa3;
+  text-transform:uppercase;color:#93c5fd;cursor:pointer;transition:all 0.18s;
 }
+.tz-pill:hover{background:rgba(59,130,246,0.2);border-color:rgba(59,130,246,0.5)}
 .stars-deco{
   position:absolute;top:-10px;right:24px;
   font-size:5rem;opacity:0.04;pointer-events:none;line-height:1;
@@ -94,12 +95,14 @@ header::before{
 }
 .time-row{display:flex;align-items:center;gap:6px}
 .time-row span{font-size:0.8rem;color:var(--muted)}
-input[type="time"],select{
+input[type="time"],input[type="text"],select{
   background:var(--surface2);border:1px solid var(--border);
   border-radius:6px;color:var(--text);padding:6px 10px;
   font-family:'Nunito Sans',sans-serif;font-size:0.88rem;outline:none;cursor:pointer;
 }
-input[type="time"]:focus,select:focus{border-color:var(--green)}
+input[type="time"]:focus,input[type="text"]:focus,select:focus{border-color:var(--green)}
+input[type="text"]{cursor:text;width:170px}
+input[type="text"]::placeholder{color:var(--muted)}
 .ctrl-btns{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
 .btn{
   padding:6px 14px;border-radius:6px;border:1px solid var(--border);
@@ -110,6 +113,8 @@ input[type="time"]:focus,select:focus{border-color:var(--green)}
 .btn:hover{border-color:var(--green);color:var(--text)}
 .btn.on{background:var(--green-glow);border-color:var(--green);color:var(--green)}
 .btn.gold-on{background:rgba(245,158,11,0.12);border-color:var(--gold);color:var(--gold)}
+.btn.blue{background:rgba(59,130,246,0.12);border-color:rgba(59,130,246,0.4);color:#93c5fd}
+.tz-invalid{color:var(--red);font-size:0.72rem;margin-top:2px;font-family:'Teko',sans-serif;letter-spacing:0.08em;display:none}
 
 /* ── FAV PANEL ── */
 .fav-panel{
@@ -227,6 +232,7 @@ footer{
   .team{font-size:0.92rem}
   .ctrl-btns{margin-left:0}
   .stats-bar{justify-content:flex-start;overflow-x:auto}
+  input[type="text"]{width:130px}
 }
 </style>
 </head>
@@ -237,14 +243,14 @@ footer{
   <div class="header-inner">
     <div class="logo">FIFA World Cup <em>2026™</em></div>
     <div class="tagline">Canada &nbsp;·&nbsp; Mexico &nbsp;·&nbsp; United States &nbsp;·&nbsp; June 11 – July 19</div>
-    <div class="nepal-pill">🇳🇵 Nepal Time Viewer &nbsp;·&nbsp; UTC+5:45</div>
+    <div class="tz-pill" id="tzPill" onclick="focusTzInput()" title="Click to change timezone">🌍 <span id="tzName"></span></div>
   </div>
 </header>
 
 <div class="stats-bar">
   <div class="stat-item">
     <div class="stat-num g" id="sGood">—</div>
-    <div class="stat-label">✓ Good for Nepal</div>
+    <div class="stat-label">✓ Good Time</div>
   </div>
   <div class="stat-item">
     <div class="stat-num r" id="sBad">—</div>
@@ -262,12 +268,21 @@ footer{
 
 <div class="controls">
   <div class="ctrl-group">
-    <div class="ctrl-label">Favorable window (Nepal Time)</div>
+    <div class="ctrl-label">Favorable window (Your Local Time)</div>
     <div class="time-row">
       <input type="time" id="tStart" value="05:00">
       <span>to</span>
       <input type="time" id="tEnd" value="22:00">
     </div>
+  </div>
+
+  <div class="ctrl-group">
+    <div class="ctrl-label">Timezone (IANA)</div>
+    <div class="time-row">
+      <input type="text" id="tzInput" placeholder="e.g. Asia/Kolkata">
+      <button class="btn blue" onclick="applyTZ()">Apply</button>
+    </div>
+    <div class="tz-invalid" id="tzErr">Invalid timezone</div>
   </div>
 
   <div class="ctrl-group">
@@ -313,10 +328,8 @@ footer{
 
 <main class="main" id="mainList"></main>
 
-<footer>
-  ALL TIMES IN NEPAL STANDARD TIME (NST / UTC+5:45) &nbsp;·&nbsp;
-  FIFA WORLD CUP 2026™ OFFICIAL SCHEDULE &nbsp;·&nbsp;
-  SHARE THIS PAGE WITH FRIENDS 🇳🇵⚽
+<footer id="footer">
+  FIFA WORLD CUP 2026™ OFFICIAL SCHEDULE &nbsp;·&nbsp; ALL TIMES IN YOUR LOCAL TIMEZONE &nbsp;·&nbsp; SHARE THIS PAGE ⚽
 </footer>
 
 <script>
@@ -459,12 +472,54 @@ const M = [
 ];
 
 // ═══════════════════════════════════════════════════════
+//  TIMEZONE — auto-detect, allow override
+// ═══════════════════════════════════════════════════════
+let userTZ = localStorage.getItem('wc26_tz') || Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+function tzShort() {
+  try {
+    const parts = new Intl.DateTimeFormat('en', {
+      timeZone: userTZ, timeZoneName: 'short'
+    }).formatToParts(new Date('2026-06-11T19:00Z'));
+    return parts.find(p => p.type === 'timeZoneName')?.value || userTZ;
+  } catch { return userTZ; }
+}
+
+function updateTzUI() {
+  document.getElementById('tzName').textContent = `${userTZ} (${tzShort()})`;
+  document.getElementById('footer').innerHTML =
+    `FIFA WORLD CUP 2026™ OFFICIAL SCHEDULE &nbsp;·&nbsp; ALL TIMES IN ${tzShort()} (${userTZ}) &nbsp;·&nbsp; SHARE THIS PAGE ⚽`;
+}
+
+function applyTZ() {
+  const val = document.getElementById('tzInput').value.trim();
+  const errEl = document.getElementById('tzErr');
+  if (!val) return;
+  try {
+    new Intl.DateTimeFormat('en', { timeZone: val }).format(new Date());
+    userTZ = val;
+    localStorage.setItem('wc26_tz', userTZ);
+    errEl.style.display = 'none';
+    document.getElementById('tzInput').value = '';
+    updateTzUI();
+    render();
+  } catch {
+    errEl.style.display = 'block';
+  }
+}
+
+function focusTzInput() {
+  const inp = document.getElementById('tzInput');
+  inp.focus();
+  inp.placeholder = userTZ;
+}
+
+// ═══════════════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════════════
-const NPT_MS = (5 * 60 + 45) * 60 * 1000;
-let favs = new Set(JSON.parse(localStorage.getItem('wc26_favs') || '[]'));
-let startM = +localStorage.getItem('wc26_s') || 300;  // 5*60
-let endM   = +localStorage.getItem('wc26_e') || 1320; // 22*60
+let favs   = new Set(JSON.parse(localStorage.getItem('wc26_favs') || '[]'));
+let startM = +localStorage.getItem('wc26_s') || 300;   // 5 * 60
+let endM   = +localStorage.getItem('wc26_e') || 1320;  // 22 * 60
 let showOk  = false;
 let showFav = false;
 let filterVal = '';
@@ -473,33 +528,45 @@ let panelOpen = false;
 // ═══════════════════════════════════════════════════════
 //  HELPERS
 // ═══════════════════════════════════════════════════════
-function npt(utc) {
-  return new Date(new Date(utc).getTime() + NPT_MS);
+function localMins(utcISO) {
+  try {
+    const parts = new Intl.DateTimeFormat('en', {
+      timeZone: userTZ, hour: 'numeric', minute: 'numeric', hour12: false
+    }).formatToParts(new Date(utcISO));
+    const h = +parts.find(p => p.type === 'hour').value;
+    const m = +parts.find(p => p.type === 'minute').value;
+    return (h === 24 ? 0 : h) * 60 + m;
+  } catch { return 0; }
 }
-function nptMins(utc) {
-  const d = npt(utc);
-  return d.getUTCHours() * 60 + d.getUTCMinutes();
-}
-function isOk(utc) {
-  const m = nptMins(utc);
+
+function isOk(utcISO) {
+  const m = localMins(utcISO);
   return m >= startM && m <= endM;
 }
-function fmtTime(d) {
-  const h = d.getUTCHours(), min = d.getUTCMinutes();
-  const ap = h >= 12 ? 'PM' : 'AM';
-  const hh = h % 12 || 12;
-  return `${hh}:${String(min).padStart(2,'0')}&nbsp;${ap}`;
+
+function fmtTime(utcISO) {
+  return new Intl.DateTimeFormat('en', {
+    timeZone: userTZ, hour: 'numeric', minute: '2-digit', hour12: true
+  }).format(new Date(utcISO));
 }
-const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-const MONS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-function fmtDate(d) {
-  return `${DAYS[d.getUTCDay()]}, ${MONS[d.getUTCMonth()]} ${d.getUTCDate()}`;
+
+function fmtDate(utcISO) {
+  return new Intl.DateTimeFormat('en', {
+    timeZone: userTZ, weekday: 'short', month: 'short', day: 'numeric'
+  }).format(new Date(utcISO));
 }
+
+function localDateKey(utcISO) {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: userTZ }).format(new Date(utcISO));
+}
+
 function isGroup(r) { return r.length === 1; }
+
 function roundLabel(r, md) {
   if (isGroup(r)) return `Group ${r} &nbsp;·&nbsp; MD${md}`;
   return {R32:'Round of 32',R16:'Round of 16',QF:'Quarter-Final',SF:'Semi-Final','3P':'3rd Place','F':'THE FINAL'}[r] || r;
 }
+
 function badgeClass(r) {
   if (r === 'F') return 'badge final';
   if (isGroup(r)) return 'badge grp';
@@ -523,25 +590,17 @@ function renderPanel() {
 // ═══════════════════════════════════════════════════════
 function render() {
   const list = M.map((m, i) => {
-    const utc = m[0], t1 = m[1], t2 = m[2], venue = m[3], city = m[4], round = m[5], md = m[6];
-    const nptD = npt(utc);
+    const [utc, t1, t2, venue, city, round, md] = m;
     const ok = isOk(utc);
     const hasFav = favs.has(t1) || favs.has(t2);
-    return { i, utc, t1, t2, venue, city, round, md, nptD, ok, hasFav };
+    return { i, utc, t1, t2, venue, city, round, md, ok, hasFav };
   }).filter(m => {
     if (showOk && !m.ok) return false;
     if (showFav && !m.hasFav) return false;
-    if (filterVal) {
-      if (isGroup(filterVal)) {
-        if (m.round !== filterVal) return false;
-      } else {
-        if (m.round !== filterVal) return false;
-      }
-    }
+    if (filterVal && m.round !== filterVal) return false;
     return true;
   });
 
-  // update stats
   const totalGood = M.filter(m => isOk(m[0])).length;
   const totalTeam = M.filter(m => favs.has(m[1]) || favs.has(m[2])).length;
   document.getElementById('sGood').textContent = totalGood;
@@ -555,20 +614,20 @@ function render() {
     return;
   }
 
-  // group by NPT date
   const byDate = new Map();
   for (const m of list) {
-    const key = m.nptD.toISOString().slice(0,10);
+    const key = localDateKey(m.utc);
     if (!byDate.has(key)) byDate.set(key, []);
     byDate.get(key).push(m);
   }
 
+  const tzAbbr = tzShort();
   let html = '';
-  for (const [dateKey, matches] of byDate) {
-    const d = new Date(dateKey + 'T00:00:00Z');
+  for (const matches of byDate.values()) {
+    const dateLabel = fmtDate(matches[0].utc);
     html += `<div class="day-block">
       <div class="day-hdr">
-        ${fmtDate(d)} <span>2026</span>
+        ${dateLabel} <span>2026</span>
         <span class="day-ct">${matches.length} match${matches.length>1?'es':''}</span>
       </div>`;
 
@@ -578,8 +637,6 @@ function render() {
       const cls1 = favs.has(m.t1) ? ' myfav' : '';
       const cls2 = favs.has(m.t2) ? ' myfav' : '';
       const cardCls = `card ${m.ok?'ok':'bad'}${m.hasFav?' fav':''}`;
-      const timeStr = fmtTime(m.nptD);
-      const dateStr = fmtDate(m.nptD);
       const utcHr = new Date(m.utc).toISOString().slice(11,16) + ' UTC';
 
       html += `<div class="${cardCls}">
@@ -597,9 +654,9 @@ function render() {
           <div class="venue"><b>${m.venue}</b>, ${m.city} &nbsp;·&nbsp; ${utcHr}</div>
         </div>
         <div class="tblock">
-          <div class="tnum">${timeStr}</div>
-          <div class="tlabel">Nepal Time</div>
-          <div class="tdate">${dateStr}</div>
+          <div class="tnum">${fmtTime(m.utc)}</div>
+          <div class="tlabel">${tzAbbr}</div>
+          <div class="tdate">${fmtDate(m.utc)}</div>
           <span class="tpill">${m.ok ? '✓ Good' : '✗ Late'}</span>
         </div>
       </div>`;
@@ -636,7 +693,10 @@ function togglePanel() {
   document.getElementById('btnPanel').classList.toggle('on', panelOpen);
 }
 
-// init time inputs
+document.getElementById('tzInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') applyTZ();
+});
+
 const pad = n => String(n).padStart(2,'0');
 document.getElementById('tStart').value = `${pad(Math.floor(startM/60))}:${pad(startM%60)}`;
 document.getElementById('tEnd').value   = `${pad(Math.floor(endM/60))}:${pad(endM%60)}`;
@@ -659,6 +719,7 @@ document.getElementById('filterSel').addEventListener('change', e => {
 });
 
 // boot
+updateTzUI();
 renderPanel();
 render();
 </script>
