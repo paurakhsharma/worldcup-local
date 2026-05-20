@@ -79,10 +79,10 @@ Squad data sourced from [Wikipedia — 2026 FIFA World Cup squads](https://en.wi
 | **Switzerland** | B | ⬜ TBD | Not yet announced. |
 | **Qatar** | B | 🟡 Provisional | Partial data only — MF/FW rows missing from Wikipedia fetch. |
 | **Bosnia & Herzegovina** | B | ✅ Confirmed | First team to announce (May 11 2026). |
-| **Brazil** | C | ⬜ TBD | — |
+| **Brazil** | C | ✅ Confirmed | Announced May 18 2026. Full 26-player squad added. Coach: Carlo Ancelotti (Italy). |
 | **Morocco** | C | ⬜ TBD | — |
 | **Haiti** | C | ✅ Confirmed | Full 26-player squad added. Coach: Sébastien Migné (France). |
-| **Scotland** | C | ⬜ TBD | — |
+| **Scotland** | C | ✅ Confirmed | Announced May 19 2026. Full 26-player squad added. Coach: Steve Clarke. |
 | **USA** | D | ⬜ TBD | Announcing May 26. |
 | **Paraguay** | D | ⬜ TBD | — |
 | **Australia** | D | ⬜ TBD | — |
@@ -111,7 +111,7 @@ Squad data sourced from [Wikipedia — 2026 FIFA World Cup squads](https://en.wi
 | **Austria** | J | ⬜ TBD | — |
 | **Algeria** | J | ⬜ TBD | — |
 | **Jordan** | J | ⬜ TBD | — |
-| **Portugal** | K | ⬜ TBD | — |
+| **Portugal** | K | ✅ Confirmed | Announced May 19 2026. Full 26-player squad added. Coach: Roberto Martínez (Spain). |
 | **Colombia** | K | ⬜ TBD | — |
 | **DR Congo** | K | ⬜ TBD | — |
 | **Uzbekistan** | K | ⬜ TBD | — |
@@ -119,6 +119,46 @@ Squad data sourced from [Wikipedia — 2026 FIFA World Cup squads](https://en.wi
 | **Croatia** | L | ⬜ TBD | — |
 | **Ghana** | L | ⬜ TBD | — |
 | **Panama** | L | ⬜ TBD | — |
+
+### How to fetch updated squad data
+
+The Wikipedia squads page is too large for a single fetch. Use the **Wikipedia section API** to get individual team data:
+
+**Step 1 — get section index for a team:**
+```
+https://en.wikipedia.org/w/api.php?action=parse&page=2026_FIFA_World_Cup_squads&prop=sections&format=json
+```
+Returns all section indices. Each team has its own subsection index (e.g. Scotland = 15, Portugal = 54, Brazil = 12).
+
+**Step 2 — fetch that team's wikitext:**
+```
+https://en.wikipedia.org/w/api.php?action=parse&page=2026_FIFA_World_Cup_squads&prop=wikitext&section=<INDEX>&format=json
+```
+
+Known section indices (may shift if Wikipedia adds/removes sections):
+
+| Team | Index | Group |
+|------|-------|-------|
+| Czech Republic | ~9 | A |
+| Mexico | ~10 | A |
+| South Africa | ~11 | A |
+| South Korea | ~12 | A |
+| Bosnia & Herzegovina | ~13 | B |
+| Canada | ~14 | B |
+| Qatar | ~15 | B (ish) |
+| Brazil | 12 | C |
+| Scotland | 15 | C |
+| Germany | 24 | E |
+| Netherlands | 28 | E/F |
+| USA | 20 | D |
+| Argentina | 48 | J |
+| Spain | 39 | H |
+| France | 42 | I |
+| Norway | 44 | I |
+| Portugal | 54 | K |
+| England | 58 | L |
+
+> Re-fetch the sections index if results look wrong — indices shift when new squads are added.
 
 ### How to add a squad
 
