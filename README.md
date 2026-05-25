@@ -99,7 +99,7 @@ Squad data sourced from [Wikipedia — 2026 FIFA World Cup squads](https://en.wi
 | **Egypt** | G | 🟡 Provisional | Provisional squad added. Coach: Hossam Hassan. Includes Mohamed Salah, Omar Marmoush. |
 | **Iran** | G | 🟡 Provisional | 30-man provisional squad added. Coach: Amir Ghalenoei. Includes Mehdi Taremi. |
 | **New Zealand** | G | ✅ Confirmed | Announced May 14 2026. Full 26-player squad with jersey numbers added. Coach: Darren Bazeley (England). |
-| **Spain** | H | ⬜ TBD | Announcing May 25. Coach: Luis de la Fuente. |
+| **Spain** | H | ✅ Confirmed | Announced May 25 2026. Full 26-player squad added. Coach: Luis de la Fuente. |
 | **Uruguay** | H | ⬜ TBD | Coach: Marcelo Bielsa. Not yet announced. |
 | **Saudi Arabia** | H | ⬜ TBD | 30-man preliminary announced May 23. Coach: Georgios Donis. Players TBD. |
 | **Cape Verde** | H | ✅ Confirmed | Full 26-player squad added. Coach: Bubista (Portugal). |
