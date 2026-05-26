@@ -112,12 +112,12 @@ Squad data sourced from [Wikipedia — 2026 FIFA World Cup squads](https://en.wi
 | **Algeria** | J | ⬜ TBD | Announcing May 31. |
 | **Jordan** | J | 🟡 Provisional | 30-man provisional squad added. Coach: Jamal Sellami (Morocco). |
 | **Portugal** | K | ✅ Confirmed | Announced May 19 2026. Full 26-player squad added. Coach: Roberto Martínez (Spain). |
-| **Colombia** | K | 🟡 Provisional | Large provisional squad added. Coach: Néstor Lorenzo (Argentina). Includes James, Luis Díaz. |
+| **Colombia** | K | ✅ Confirmed | Announced May 2026. Full 26-player squad added. Coach: Néstor Lorenzo (Argentina). Includes James, Luis Díaz. |
 | **DR Congo** | K | ✅ Confirmed | Full 26-player squad added. Coach: Sébastien Desabre (France). Includes Wissa, Wan-Bissaka. |
 | **Uzbekistan** | K | 🟡 Provisional | Large provisional squad added. Coach: Fabio Cannavaro (Italy). Includes Shomurodov, Khusanov. |
 | **England** | L | ✅ Confirmed | Full 26-player squad added. Coach: Thomas Tuchel (Germany). Includes Kane, Bellingham, Saka. |
 | **Croatia** | L | ✅ Confirmed | Full 26-player squad added. Coach: Zlatko Dalić. Includes Modrić, Kovačić, Gvardiol. |
-| **Ghana** | L | ⬜ TBD | Coach: Carlos Queiroz. Not yet announced. |
+| **Ghana** | L | 🟡 Provisional | Provisional 28-man squad added. Coach: Carlos Queiroz (Portugal). Includes Thomas Partey, Jordan Ayew, Iñaki Williams. |
 | **Panama** | L | ⬜ TBD | Announcing May 26. |
 
 ### How to fetch updated squad data
