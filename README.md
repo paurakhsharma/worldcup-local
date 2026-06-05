@@ -66,59 +66,59 @@ Persisted:      localStorage key wc26_tz
 
 Squad data sourced from [Wikipedia — 2026 FIFA World Cup squads](https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads).
 
-> **Note:** Jersey numbers (1–26) are pending FIFA official squad submission deadline **June 2, 2026**.
-> When adding a new squad to `SQUADS` in `index.html`, update the table below and mark it accordingly.
+> **Note:** All 48 squads confirmed as of June 5 2026 (post FIFA June 2 deadline).
+> When updating a squad in `SQUADS` in `index.html`, update the table below accordingly.
 
 | Team | Group | Status | Notes |
 |------|-------|--------|-------|
-| **Mexico** | A | 🟡 Provisional | Trimmed to 26 from provisional list. Update after June 2. |
-| **South Korea** | A | ✅ Confirmed | Announced May 16 2026. |
-| **South Africa** | A | 🟡 Provisional | 32-man preliminary squad added. Coach: Hugo Broos (Belgium). |
-| **Czechia** | A | ✅ Confirmed | Announced May 2026. |
-| **Canada** | B | ⬜ TBD | Announcing May 29. |
+| **Mexico** | A | ✅ Confirmed | Announced May 31 2026. Full 26-player squad. Coach: Javier Aguirre. |
+| **South Korea** | A | ✅ Confirmed | Announced May 16 2026. Coach: Hong Myung-bo. |
+| **South Africa** | A | ✅ Confirmed | Announced May 27 2026. Full 26-player squad. Coach: Hugo Broos (Belgium). |
+| **Czechia** | A | ✅ Confirmed | Announced May 2026. Coach: Miroslav Koubek. |
+| **Canada** | B | ✅ Confirmed | Full squad added. Coach: Jesse Marsch (USA). Includes Alphonso Davies, Jonathan David. |
 | **Switzerland** | B | ✅ Confirmed | Full 26-player squad added. Coach: Murat Yakin. |
-| **Qatar** | B | 🟡 Provisional | Partial data only — MF/FW rows missing from Wikipedia fetch. |
-| **Bosnia & Herzegovina** | B | ✅ Confirmed | First team to announce (May 11 2026). |
-| **Brazil** | C | ✅ Confirmed | Announced May 18 2026. Full 26-player squad added. Coach: Carlo Ancelotti (Italy). |
-| **Morocco** | C | ⬜ TBD | Announcing May 26. Coach: Mohamed Ouahbi. |
+| **Qatar** | B | ✅ Confirmed | Announced June 1 2026. Full 26-player squad. Coach: Julen Lopetegui (Spain). |
+| **Bosnia & Herzegovina** | B | ✅ Confirmed | First team to announce (May 11 2026). Coach: Sergej Barbarez. |
+| **Brazil** | C | ✅ Confirmed | Announced May 18 2026. Full 26-player squad. Coach: Carlo Ancelotti (Italy). |
+| **Morocco** | C | ✅ Confirmed | Full 26-player squad added. Coach: Mohamed Ouahbi. Includes Hakimi, Bounou, Brahim Díaz. |
 | **Haiti** | C | ✅ Confirmed | Full 26-player squad added. Coach: Sébastien Migné (France). |
-| **Scotland** | C | ✅ Confirmed | Announced May 19 2026. Full 26-player squad added. Coach: Steve Clarke. |
-| **USA** | D | ⬜ TBD | Announcing May 26. Coach: Mauricio Pochettino. |
-| **Paraguay** | D | 🟡 Provisional | Large preliminary squad added. Coach: Gustavo Alfaro (Argentina). |
-| **Australia** | D | ⬜ TBD | Announcing June 1. |
-| **Turkey** | D | 🟡 Provisional | 33-man provisional squad added. Coach: Vincenzo Montella (Italy). |
-| **Germany** | E | ✅ Confirmed | Announced May 21 2026. Full 26-player squad added. Coach: Julian Nagelsmann. |
-| **Ecuador** | E | ⬜ TBD | Preliminary May 24, final June 1. |
-| **Ivory Coast** | E | ✅ Confirmed | Announced May 15 2026. Full 26-player squad added. Coach: Emerse Faé. |
+| **Scotland** | C | ✅ Confirmed | Announced May 19 2026. Full 26-player squad. Coach: Steve Clarke. |
+| **USA** | D | ✅ Confirmed | Full 26-player squad added. Coach: Mauricio Pochettino (Argentina). Includes Pulisic, McKennie. |
+| **Paraguay** | D | ✅ Confirmed | Announced June 1 2026. Full 26-player squad. Coach: Gustavo Alfaro (Argentina). |
+| **Australia** | D | ✅ Confirmed | Full 26-player squad added. Coach: Tony Popovic. Includes Mathew Ryan, Leckie. |
+| **Turkey** | D | ✅ Confirmed | Announced June 2 2026. Full 26-player squad. Coach: Vincenzo Montella (Italy). Includes Arda Güler, Çalhanoğlu. |
+| **Germany** | E | ✅ Confirmed | Announced May 21 2026. Full 26-player squad. Coach: Julian Nagelsmann. |
+| **Ecuador** | E | ✅ Confirmed | Full 26-player squad added. Coach: Sebastián Beccacece (Argentina). Includes Moisés Caicedo, Kendry Páez. |
+| **Ivory Coast** | E | ✅ Confirmed | Announced May 15 2026. Full 26-player squad. Coach: Emerse Faé. |
 | **Curacao** | E | ✅ Confirmed | Full 26-player squad added. Coach: Dick Advocaat (Netherlands). |
-| **Netherlands** | F | ⬜ TBD | Announcing May 27. |
-| **Japan** | F | ✅ Confirmed | Announced May 15 2026. Full 26-player squad added. Coach: Hajime Moriyasu. |
+| **Netherlands** | F | ✅ Confirmed | Full 26-player squad added. Coach: Ronald Koeman. Includes Van Dijk, De Jong, Gakpo. |
+| **Japan** | F | ✅ Confirmed | Announced May 15 2026. Full 26-player squad. Coach: Hajime Moriyasu. |
 | **Sweden** | F | ✅ Confirmed | Full 26-player squad added. Coach: Graham Potter (England). |
 | **Tunisia** | F | ✅ Confirmed | Full 26-player squad added. Coach: Sabri Lamouchi (France). |
-| **Belgium** | G | ✅ Confirmed | Announced May 15 2026. Full 26-player squad added. Coach: Rudi Garcia (France). |
-| **Egypt** | G | 🟡 Provisional | Provisional squad added. Coach: Hossam Hassan. Includes Mohamed Salah, Omar Marmoush. |
-| **Iran** | G | 🟡 Provisional | 30-man provisional squad added. Coach: Amir Ghalenoei. Includes Mehdi Taremi. |
-| **New Zealand** | G | ✅ Confirmed | Announced May 14 2026. Full 26-player squad with jersey numbers added. Coach: Darren Bazeley (England). |
-| **Spain** | H | ✅ Confirmed | Announced May 25 2026. Full 26-player squad added. Coach: Luis de la Fuente. |
-| **Uruguay** | H | ⬜ TBD | Coach: Marcelo Bielsa. Not yet announced. |
-| **Saudi Arabia** | H | ⬜ TBD | 30-man preliminary announced May 23. Coach: Georgios Donis. Players TBD. |
+| **Belgium** | G | ✅ Confirmed | Announced May 15 2026. Full 26-player squad. Coach: Rudi Garcia (France). |
+| **Egypt** | G | ✅ Confirmed | Announced May 30 2026. Full squad added. Coach: Hossam Hassan. Includes Salah, Marmoush. |
+| **Iran** | G | ✅ Confirmed | Announced June 1 2026. Full 26-player squad. Coach: Amir Ghalenoei. Includes Taremi. |
+| **New Zealand** | G | ✅ Confirmed | Announced May 14 2026. Full 26-player squad. Coach: Darren Bazeley (England). |
+| **Spain** | H | ✅ Confirmed | Announced May 25 2026. Full 26-player squad. Coach: Luis de la Fuente. |
+| **Uruguay** | H | ✅ Confirmed | Full 26-player squad added. Coach: Marcelo Bielsa (Argentina). Includes Valverde, Darwin Núñez. |
+| **Saudi Arabia** | H | ✅ Confirmed | Full 26-player squad added. Coach: Georgios Donis (Greece). Includes Salem Al-Dawsari. |
 | **Cape Verde** | H | ✅ Confirmed | Full 26-player squad added. Coach: Bubista (Portugal). |
-| **France** | I | ✅ Confirmed | Announced May 14 2026. Full 26-player squad added. Coach: Didier Deschamps. |
-| **Senegal** | I | 🟡 Provisional | 28-man squad announced May 21 2026. Coach: Pape Thiaw. Includes Mané, Salah. |
+| **France** | I | ✅ Confirmed | Announced May 14 2026. Full 26-player squad. Coach: Didier Deschamps. |
+| **Senegal** | I | ✅ Confirmed | Announced June 1 2026. Full 26-player squad. Coach: Pape Thiaw. Includes Mané, Jackson. |
 | **Norway** | I | ✅ Confirmed | Full 26-player squad added. Coach: Ståle Solbakken. Includes Haaland, Ødegaard. |
-| **Iraq** | I | 🟡 Provisional | 34-man provisional squad added. Coach: Graham Arnold (Australia). |
-| **Argentina** | J | 🟡 Provisional | 55-man preliminary squad added. Coach: Lionel Scaloni. Includes Messi. |
+| **Iraq** | I | ✅ Confirmed | Announced June 1 2026. Full 26-player squad. Coach: Graham Arnold (Australia). |
+| **Argentina** | J | ✅ Confirmed | Announced May 28 2026. Full 26-player squad. Coach: Lionel Scaloni. Includes Messi, Lautaro. |
 | **Austria** | J | ✅ Confirmed | Full 26-player squad added. Coach: Ralf Rangnick (Germany). Includes Alaba, Arnautović. |
-| **Algeria** | J | ⬜ TBD | Announcing May 31. |
-| **Jordan** | J | 🟡 Provisional | 30-man provisional squad added. Coach: Jamal Sellami (Morocco). |
-| **Portugal** | K | ✅ Confirmed | Announced May 19 2026. Full 26-player squad added. Coach: Roberto Martínez (Spain). |
-| **Colombia** | K | ✅ Confirmed | Announced May 2026. Full 26-player squad added. Coach: Néstor Lorenzo (Argentina). Includes James, Luis Díaz. |
+| **Algeria** | J | ✅ Confirmed | Full 26-player squad added. Coach: Vladimir Petković (Switzerland). Includes Mahrez, Gouiri. |
+| **Jordan** | J | ✅ Confirmed | Announced June 2 2026. Full 26-player squad. Coach: Jamal Sellami (Morocco). |
+| **Portugal** | K | ✅ Confirmed | Announced May 19 2026. Full 26-player squad. Coach: Roberto Martínez (Spain). |
+| **Colombia** | K | ✅ Confirmed | Announced May 25 2026. Full 26-player squad. Coach: Néstor Lorenzo (Argentina). Includes James, Luis Díaz. |
 | **DR Congo** | K | ✅ Confirmed | Full 26-player squad added. Coach: Sébastien Desabre (France). Includes Wissa, Wan-Bissaka. |
-| **Uzbekistan** | K | 🟡 Provisional | Large provisional squad added. Coach: Fabio Cannavaro (Italy). Includes Shomurodov, Khusanov. |
+| **Uzbekistan** | K | ✅ Confirmed | Announced June 2 2026. Full 26-player squad. Coach: Fabio Cannavaro (Italy). Includes Shomurodov, Khusanov. |
 | **England** | L | ✅ Confirmed | Full 26-player squad added. Coach: Thomas Tuchel (Germany). Includes Kane, Bellingham, Saka. |
 | **Croatia** | L | ✅ Confirmed | Full 26-player squad added. Coach: Zlatko Dalić. Includes Modrić, Kovačić, Gvardiol. |
-| **Ghana** | L | 🟡 Provisional | Provisional 28-man squad added. Coach: Carlos Queiroz (Portugal). Includes Thomas Partey, Jordan Ayew, Iñaki Williams. |
-| **Panama** | L | ⬜ TBD | Announcing May 26. |
+| **Ghana** | L | ✅ Confirmed | Full 26-player squad added. Coach: Carlos Queiroz (Portugal). Includes Partey, Inaki Williams. |
+| **Panama** | L | ✅ Confirmed | Full 26-player squad added. Coach: Thomas Christiansen (Spain). |
 
 ### How to fetch updated squad data
 
