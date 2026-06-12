@@ -107,7 +107,7 @@ Squad data sourced from [Wikipedia — 2026 FIFA World Cup squads](https://en.wi
 | **Senegal** | I | ✅ Confirmed | Announced June 1 2026. Full 26-player squad. Coach: Pape Thiaw. Includes Mané, Jackson. |
 | **Norway** | I | ✅ Confirmed | Full 26-player squad added. Coach: Ståle Solbakken. Includes Haaland, Ødegaard. |
 | **Iraq** | I | ✅ Confirmed | Announced June 1 2026. Full 26-player squad. Coach: Graham Arnold (Australia). Ahmed Maknzi replaced Ahmed Yahya (June 2026). |
-| **Argentina** | J | ✅ Confirmed | Announced May 28 2026. 25-player squad. Coach: Lionel Scaloni. Leonardo Balerdi withdrawn (June 2026). |
+| **Argentina** | J | ✅ Confirmed | Announced May 28 2026. Full 26-player squad. Coach: Lionel Scaloni. Marcos Senesi in for Leonardo Balerdi (June 11 2026). |
 | **Austria** | J | ✅ Confirmed | 25-player squad. Coach: Ralf Rangnick (Germany). Christoph Baumgartner withdrawn (June 2026). |
 | **Algeria** | J | ✅ Confirmed | Full 26-player squad added. Coach: Vladimir Petković (Switzerland). Includes Mahrez, Gouiri. |
 | **Jordan** | J | ✅ Confirmed | Announced June 2 2026. 25-player squad. Coach: Jamal Sellami (Morocco). Ibrahim Sabra withdrawn (June 2026). |
