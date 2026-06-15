@@ -126,6 +126,7 @@ input[type="text"]::placeholder{color:var(--muted)}
 .btn.on{background:var(--green-glow);border-color:var(--green);color:var(--green)}
 .btn.gold-on{background:rgba(245,158,11,0.12);border-color:var(--gold);color:var(--gold)}
 .btn.blue{background:rgba(59,130,246,0.12);border-color:rgba(59,130,246,0.4);color:#93c5fd}
+.card.past-game{opacity:0.35;filter:grayscale(0.5)}
 .tz-invalid{color:var(--red);font-size:0.72rem;margin-top:2px;font-family:'Teko',sans-serif;letter-spacing:0.08em;display:none}
 
 /* ── FAV PANEL ── */
@@ -418,6 +419,7 @@ footer{text-align:center;padding:24px 16px;color:var(--muted);font-size:0.78rem;
     </div>
 
     <div class="ctrl-btns">
+      <button class="btn on" id="btnPast" onclick="toggle('past')">⏩ Hide Past</button>
       <button class="btn" id="btnOk" onclick="toggle('ok')">✓ Favorable only</button>
       <button class="btn" id="btnFav" onclick="toggle('fav')">⭐ My teams</button>
       <button class="btn" id="btnPanel" onclick="togglePanel()">⚙ Pick my teams</button>
@@ -2272,6 +2274,7 @@ let startM  = +localStorage.getItem('wc26_s') || 300;
 let endM    = +localStorage.getItem('wc26_e') || 1320;
 let showOk  = false;
 let showFav = false;
+let hidePast = localStorage.getItem('wc26_hp') !== '0';
 let filterVal  = '';
 let panelOpen  = false;
 let activeTab  = 'matches';
@@ -2467,12 +2470,15 @@ function renderPanel() {
 //  RENDER MATCHES
 // ═══════════════════════════════════════════════════════
 function render() {
+  const now = Date.now();
   const list = M.map((m, i) => {
     const [utc, t1, t2, venue, city, round, md] = m;
     const ok = isOk(utc);
     const hasFav = favs.has(t1) || favs.has(t2);
-    return { i, utc, t1, t2, venue, city, round, md, ok, hasFav };
+    const isPast = new Date(utc) < now;
+    return { i, utc, t1, t2, venue, city, round, md, ok, hasFav, isPast };
   }).filter(m => {
+    if (hidePast && m.isPast) return false;
     if (showOk && !m.ok) return false;
     if (showFav && !m.hasFav) return false;
     if (filterVal && m.round !== filterVal) return false;
@@ -2514,7 +2520,7 @@ function render() {
       const f2 = FLAG[m.t2] || '';
       const cls1 = favs.has(m.t1) ? ' myfav' : '';
       const cls2 = favs.has(m.t2) ? ' myfav' : '';
-      const cardCls = `card ${m.ok?'ok':'bad'}${m.hasFav?' fav':''}`;
+      const cardCls = `card ${m.ok?'ok':'bad'}${m.hasFav?' fav':''}${m.isPast?' past-game':''}`;
       const utcHr = new Date(m.utc).toISOString().slice(11,16) + ' UTC';
       // Only show squad link for real teams (not placeholder bracket text)
       const hasSquad1 = FLAG[m.t1];
@@ -2568,7 +2574,11 @@ function toggleFav(team) {
 }
 
 function toggle(type) {
-  if (type === 'ok') {
+  if (type === 'past') {
+    hidePast = !hidePast;
+    localStorage.setItem('wc26_hp', hidePast ? '1' : '0');
+    document.getElementById('btnPast').classList.toggle('on', hidePast);
+  } else if (type === 'ok') {
     showOk = !showOk;
     document.getElementById('btnOk').classList.toggle('on', showOk);
   } else {
