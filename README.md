@@ -185,7 +185,52 @@ Known section indices (re-fetched June 8 2026 — may shift if Wikipedia adds/re
 3. Update the status table above (✅ / 🟡 / ⬜)
 4. Source: [Wikipedia — 2026 FIFA World Cup squads](https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads)
 
+## Knockout Stage Data
+
+Match tuple schema (8 elements):
+```
+[utcISO, team1, team2, venue, city, round, matchday, score]
+```
+- `round`: `"R32"` | `"R16"` | `"QF"` | `"SF"` | `"3P"` | `"F"`
+- `matchday`: always `0` for knockout matches (unused)
+- `score`: `null` = upcoming, `"2-1"` = FT, `"1-1 (aet)"` = extra time, `"3-2 (pen)"` = penalties
+
+**Source:** [Wikipedia — 2026 FIFA World Cup knockout stage](https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_knockout_stage)
+
+### How to update as matches are played
+
+1. Find the match entry in `const M = [...]` in `index.html` by date/venue
+2. Replace placeholder team names (e.g. `"Group I 1st"`, `"Best 3rd Place"`) with real team names once group stage is final
+3. Set `score` from `null` to the result string once played — e.g. `"2-1"` or `"1-1 (pen)"`
+4. Team names must match keys in `FLAG` object for flags/squad links to work
+
+**Known R32 matchups (confirmed June 26 2026):**
+
+| Date UTC | Home | Away | Venue |
+|----------|------|------|-------|
+| Jun 28 19:00 | South Africa | Canada | SoFi Stadium |
+| Jun 29 17:00 | Brazil | Japan | NRG Stadium |
+| Jun 29 20:30 | Germany | Best 3rd (C/D/F) | Gillette Stadium |
+| Jun 30 01:00 | Netherlands | Morocco | Estadio Akron |
+| Jun 30 17:00 | Ivory Coast | Group I 2nd | AT&T Stadium |
+| Jul 01 01:00 | Mexico | Best 3rd (C/E/H) | Estadio Azteca |
+| Jul 02 00:00 | USA | Bosnia & Herzegovina | Levi's Stadium |
+| Jul 03 03:00 | Switzerland | Best 3rd (E/F/G/I/J) | BC Place |
+| Jul 03 18:00 | Australia | Group G 2nd | AT&T Stadium |
+| Jul 03 22:00 | Argentina | Group H 2nd | Hard Rock Stadium |
+
+Remaining R32 slots (Groups G, H, I, J, K, L) TBD after June 27–28 final matchdays.
+
+### How to fetch knockout stage data
+
+Single page fetch — no section API needed:
+```
+WebFetch: https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_knockout_stage
+Prompt: List all matches with date, teams, score, venue
+```
+
 ## Data Sources
 
 - Match schedule: Sky Sports, Al Jazeera, worldcupwiki.com (official FIFA 2026 fixture list)
+- Knockout stage data: Wikipedia — 2026 FIFA World Cup knockout stage
 - Squad data: Wikipedia — 2026 FIFA World Cup squads
