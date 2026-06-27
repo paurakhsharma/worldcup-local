@@ -204,22 +204,25 @@ Match tuple schema (8 elements):
 3. Set `score` from `null` to the result string once played — e.g. `"2-1"` or `"1-1 (pen)"`
 4. Team names must match keys in `FLAG` object for flags/squad links to work
 
-**Known R32 matchups (confirmed June 26 2026):**
+**Known R32 matchups (confirmed June 27 2026):**
 
 | Date UTC | Home | Away | Venue |
 |----------|------|------|-------|
 | Jun 28 19:00 | South Africa | Canada | SoFi Stadium |
 | Jun 29 17:00 | Brazil | Japan | NRG Stadium |
-| Jun 29 20:30 | Germany | Best 3rd (C/D/F) | Gillette Stadium |
+| Jun 29 20:30 | Germany | Paraguay | Gillette Stadium |
 | Jun 30 01:00 | Netherlands | Morocco | Estadio Akron |
-| Jun 30 17:00 | Ivory Coast | Group I 2nd | AT&T Stadium |
-| Jul 01 01:00 | Mexico | Best 3rd (C/E/H) | Estadio Azteca |
+| Jun 30 17:00 | Ivory Coast | Norway | AT&T Stadium |
+| Jun 30 21:00 | France | Sweden | MetLife Stadium |
+| Jul 01 01:00 | Mexico | Best 3rd (C/E) | Estadio Azteca |
+| Jul 01 20:00 | Egypt | Best 3rd (A/I/J) | Lumen Field |
 | Jul 02 00:00 | USA | Bosnia & Herzegovina | Levi's Stadium |
-| Jul 03 03:00 | Switzerland | Best 3rd (E/F/G/I/J) | BC Place |
+| Jul 02 19:00 | Spain | Group J 2nd | SoFi Stadium |
+| Jul 03 03:00 | Switzerland | Best 3rd (E/G/I/J) | BC Place |
 | Jul 03 18:00 | Australia | Group G 2nd | AT&T Stadium |
-| Jul 03 22:00 | Argentina | Group H 2nd | Hard Rock Stadium |
+| Jul 03 22:00 | Argentina | Cape Verde | Hard Rock Stadium |
 
-Remaining R32 slots (Groups G, H, I, J, K, L) TBD after June 27–28 final matchdays.
+Remaining R32 slots (Groups G, J, K, L runners-up and best-third-place pairings) TBD after June 27–28 final matchdays.
 
 ### How to fetch knockout stage data
 
