@@ -204,7 +204,7 @@ Match tuple schema (8 elements):
 3. Set `score` from `null` to the result string once played — e.g. `"2-1"` or `"1-1 (pen)"`
 4. Team names must match keys in `FLAG` object for flags/squad links to work
 
-**Known R32 matchups (confirmed June 27 2026):**
+**All R32 matchups confirmed (June 28 2026 — combination 67):**
 
 | Date UTC | Home | Away | Venue |
 |----------|------|------|-------|
@@ -214,15 +214,18 @@ Match tuple schema (8 elements):
 | Jun 30 01:00 | Netherlands | Morocco | Estadio Akron |
 | Jun 30 17:00 | Ivory Coast | Norway | AT&T Stadium |
 | Jun 30 21:00 | France | Sweden | MetLife Stadium |
-| Jul 01 01:00 | Mexico | Best 3rd (C/E) | Estadio Azteca |
-| Jul 01 20:00 | Egypt | Best 3rd (A/I/J) | Lumen Field |
+| Jul 01 01:00 | Mexico | Ecuador | Estadio Azteca |
+| Jul 01 16:00 | England | DR Congo | Mercedes-Benz Stadium |
+| Jul 01 20:00 | Belgium | Senegal | Lumen Field |
 | Jul 02 00:00 | USA | Bosnia & Herzegovina | Levi's Stadium |
-| Jul 02 19:00 | Spain | Group J 2nd | SoFi Stadium |
-| Jul 03 03:00 | Switzerland | Best 3rd (E/G/I/J) | BC Place |
-| Jul 03 18:00 | Australia | Group G 2nd | AT&T Stadium |
+| Jul 02 19:00 | Spain | Austria | SoFi Stadium |
+| Jul 02 23:00 | Portugal | Croatia | BMO Field |
+| Jul 03 03:00 | Switzerland | Algeria | BC Place |
+| Jul 03 18:00 | Australia | Egypt | AT&T Stadium |
 | Jul 03 22:00 | Argentina | Cape Verde | Hard Rock Stadium |
+| Jul 04 01:30 | Colombia | Ghana | Arrowhead Stadium |
 
-Remaining R32 slots (Groups G, J, K, L runners-up and best-third-place pairings) TBD after June 27–28 final matchdays.
+Third-place teams that advanced: Bosnia & Herzegovina (B), Paraguay (D), Ecuador (E), Sweden (F), Senegal (I), Algeria (J), DR Congo (K), Ghana (L).
 
 ### How to fetch knockout stage data
 
