@@ -77,6 +77,22 @@ header::before{
 .tab-btn:hover{color:var(--text)}
 .tab-btn.active{color:var(--green);border-bottom-color:var(--green)}
 
+/* ── BRACKET ── */
+.bracket-wrap{background:#050d1e;padding:20px 8px;min-height:400px}
+.match-tip{
+  position:fixed;z-index:200;pointer-events:none;
+  background:#120d02;border:1px solid #c8a030;border-radius:10px;
+  padding:10px 14px;min-width:210px;max-width:280px;
+  box-shadow:0 4px 24px rgba(0,0,0,0.7),0 0 16px rgba(200,160,48,0.12);
+  display:none;
+}
+.match-tip-round{font-family:'Teko',sans-serif;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:#c8a030;margin-bottom:6px}
+.match-tip-teams{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:0.88rem;font-weight:600;color:#e0e7ff}
+.match-tip-score{font-family:'Teko',sans-serif;font-size:1.1rem;color:#f59e0b;min-width:36px;text-align:center;flex-shrink:0}
+.match-tip-vs{font-family:'Teko',sans-serif;font-size:0.95rem;color:#4a6080;min-width:36px;text-align:center;flex-shrink:0}
+.match-tip-meta{font-size:0.72rem;color:#4a6080;margin-top:6px;line-height:1.5}
+.match-tip-date{color:#6b8aaa}
+
 /* ── STATS BAR ── */
 .stats-bar{
   display:flex;flex-wrap:wrap;justify-content:center;gap:0;
@@ -361,6 +377,7 @@ footer{text-align:center;padding:24px 16px;color:var(--muted);font-size:0.78rem;
 <nav class="tab-nav">
   <button class="tab-btn active" id="tabMatches" onclick="switchTab('matches')">⚽ Matches</button>
   <button class="tab-btn" id="tabSquads" onclick="switchTab('squads')">👥 Squads</button>
+  <button class="tab-btn" id="tabBracket" onclick="switchTab('bracket')">🗺 Bracket</button>
 </nav>
 
 <div id="matchesView">
@@ -437,6 +454,11 @@ footer{text-align:center;padding:24px 16px;color:var(--muted);font-size:0.78rem;
 
 <div id="squadsView" style="display:none">
   <div class="squads-main" id="squadsMain"></div>
+</div>
+
+<div id="bracketView" style="display:none">
+  <div class="bracket-wrap" id="bracketSvgWrap"></div>
+  <div class="match-tip" id="matchTip"></div>
 </div>
 
 <!-- Squad modal (triggered from match card team click) -->
@@ -2192,7 +2214,7 @@ const M = [
 ["2026-06-27T23:30Z","DR Congo","Uzbekistan","Mercedes-Benz Stadium","Atlanta","K",3],
 ["2026-06-28T02:00Z","Algeria","Austria","Arrowhead Stadium","Kansas City","J",3],
 ["2026-06-28T02:00Z","Jordan","Argentina","AT&T Stadium","Arlington","J",3],
-["2026-06-28T19:00Z","South Africa","Canada","SoFi Stadium","Los Angeles","R32",0,null],
+["2026-06-28T19:00Z","South Africa","Canada","SoFi Stadium","Los Angeles","R32",0,"0-1"],
 ["2026-06-29T17:00Z","Brazil","Japan","NRG Stadium","Houston","R32",0,null],
 ["2026-06-29T20:30Z","Germany","Paraguay","Gillette Stadium","Foxborough","R32",0,null],
 ["2026-06-30T01:00Z","Netherlands","Morocco","Estadio Akron","Guadalajara","R32",0,null],
@@ -2377,9 +2399,12 @@ function switchTab(tab) {
   activeTab = tab;
   document.getElementById('matchesView').style.display = tab === 'matches' ? '' : 'none';
   document.getElementById('squadsView').style.display  = tab === 'squads'  ? '' : 'none';
+  document.getElementById('bracketView').style.display = tab === 'bracket' ? '' : 'none';
   document.getElementById('tabMatches').classList.toggle('active', tab === 'matches');
   document.getElementById('tabSquads').classList.toggle('active', tab === 'squads');
+  document.getElementById('tabBracket').classList.toggle('active', tab === 'bracket');
   if (tab === 'squads') renderSquadsView();
+  if (tab === 'bracket') renderBracket();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -2610,6 +2635,323 @@ document.getElementById('tEnd').addEventListener('change', e => {
   endM = h*60+m; localStorage.setItem('wc26_e', endM); render();
 });
 document.getElementById('filterSel').addEventListener('change', e => { filterVal = e.target.value; render(); });
+
+// ═══════════════════════════════════════════════════════
+//  BRACKET
+// ═══════════════════════════════════════════════════════
+const CC = {
+  "Mexico":"mx","South Africa":"za","South Korea":"kr","Czechia":"cz",
+  "Canada":"ca","Bosnia & Herzegovina":"ba","Qatar":"qa","Switzerland":"ch",
+  "Brazil":"br","Morocco":"ma","Haiti":"ht","Scotland":"gb-sct",
+  "USA":"us","Paraguay":"py","Australia":"au","Turkey":"tr",
+  "Germany":"de","Curacao":"cw","Ivory Coast":"ci","Ecuador":"ec",
+  "Netherlands":"nl","Japan":"jp","Sweden":"se","Tunisia":"tn",
+  "Belgium":"be","Egypt":"eg","Iran":"ir","New Zealand":"nz",
+  "Spain":"es","Cape Verde":"cv","Saudi Arabia":"sa","Uruguay":"uy",
+  "France":"fr","Senegal":"sn","Iraq":"iq","Norway":"no",
+  "Argentina":"ar","Algeria":"dz","Austria":"at","Jordan":"jo",
+  "Portugal":"pt","DR Congo":"cd","Uzbekistan":"uz","Colombia":"co",
+  "England":"gb-eng","Croatia":"hr","Ghana":"gh","Panama":"pa"
+};
+
+function abbrevPlaceholder(name) {
+  const g = name.match(/Group ([A-L]) (\d)/);
+  if (g) return `G${g[1]}${g[2]}`;
+  if (name.includes('Best 3rd')) return '3°';
+  const m = name.match(/M(\d+)/);
+  if (m) return 'M'+m[1];
+  return name.slice(0,3).toUpperCase();
+}
+
+function renderBracket() {
+  const W = 860, H = 860, CX = 430, CY = 430;
+  // Radii (team slots outer → trophy inner)
+  const TR   = 355;  // team circles
+  const MD_R = 285;  // R32 match connector dots
+  const R16  = 222;  // R16 junction dots
+  const QF   = 166;  // QF junction dots
+  const SF   = 114;  // SF junction dots
+  const NR   = 21;   // team node visual radius
+  const LC   = '#9a7f38';  // line/dot color
+
+  // Angle: position i of 32, clockwise from top
+  const A  = i => -15*Math.PI/32 + i*(2*Math.PI/32);
+  const px = (r,a) => CX + r*Math.cos(a);
+  const py = (r,a) => CY + r*Math.sin(a);
+  const f  = n => n.toFixed(1);
+
+  // R32 match order arranged so adjacent pairs share the same R16 match
+  // Based on actual R16 matchups: R16[0]=R32_M1 vs R32_M3, R16[1]=R32_M2 vs R32_M5, etc.
+  const ORD = [0,2,1,4,3,5,6,7,10,11,8,9,13,15,12,14];
+  const r32 = M.filter(m => m[5]==='R32');
+
+  const p = [];
+
+  p.push(`<defs>
+    <radialGradient id="disc" cx="50%" cy="50%">
+      <stop offset="0%"   stop-color="#020810"/>
+      <stop offset="18%"  stop-color="#071428"/>
+      <stop offset="48%"  stop-color="#071428"/>
+      <stop offset="75%"  stop-color="#050d1e" stop-opacity="0.9"/>
+      <stop offset="90%"  stop-color="#050d1e" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#050d1e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="disc2" cx="50%" cy="50%">
+      <stop offset="0%"   stop-color="#050d1e" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#050d1e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cg" cx="50%" cy="50%">
+      <stop offset="0%"   stop-color="#fff4c2" stop-opacity="0.96"/>
+      <stop offset="8%"   stop-color="#ffd060" stop-opacity="0.88"/>
+      <stop offset="20%"  stop-color="#f0a020" stop-opacity="0.70"/>
+      <stop offset="38%"  stop-color="#c06808" stop-opacity="0.42"/>
+      <stop offset="58%"  stop-color="#7a3e04" stop-opacity="0.18"/>
+      <stop offset="78%"  stop-color="#2a1000" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#000"    stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="fc" clipPathUnits="objectBoundingBox">
+      <circle cx="0.5" cy="0.5" r="0.5"/>
+    </clipPath>
+  </defs>`);
+
+  // Background disc
+  p.push(`<circle cx="${CX}" cy="${CY}" r="${TR+55}" fill="url(#disc)"/>`);
+  // Blue outer rim aura (app theme echo)
+  p.push(`<circle cx="${CX}" cy="${CY}" r="${TR+55}" fill="url(#disc2)"/>`);
+  // Center glow
+  p.push(`<circle cx="${CX}" cy="${CY}" r="${QF+130}" fill="url(#cg)"/>`);
+
+  // ── PRE-COMPUTE MATCH RESULTS (needed for line clipping) ──
+  const matchResult = {};
+  ORD.forEach((mi, ci) => {
+    const match = r32[mi];
+    if (!match) return;
+    const [,t1,t2,,,,,score] = match;
+    if (score == null) return;
+    const [s1, s2] = String(score).split('-').map(Number);
+    matchResult[ci] = { winner: s1 >= s2 ? t1 : t2, loser: s1 >= s2 ? t2 : t1 };
+  });
+  // Store globally so tooltip functions can access
+  window._bracketResults = matchResult;
+  window._bracketORD = ORD;
+
+  // Helper: trim line endpoints to circle edges
+  const WR = NR; // winner node same size as team circles
+  const tl = (x1,y1,x2,y2,r1,r2) => {
+    const dx=x2-x1, dy=y2-y1, d=Math.sqrt(dx*dx+dy*dy);
+    if(d<1) return null;
+    return [x1+r1*dx/d, y1+r1*dy/d, x2-r2*dx/d, y2-r2*dy/d];
+  };
+  const ln = (pts,sw,so) => pts ? `<line x1="${f(pts[0])}" y1="${f(pts[1])}" x2="${f(pts[2])}" y2="${f(pts[3])}" stroke="${LC}" stroke-width="${sw}" stroke-opacity="${so}" stroke-linecap="round"/>` : '';
+
+  // ── LINES (clipped at both circle edges) ──
+  const DOT = 5, DOT16 = 5.5, DOT_QF = 6, DOT_SF = 6.5, TROPHY_R = 34;
+  // R32 teams → R32 match connector
+  for (let ci = 0; ci < 16; ci++) {
+    const am = A(2*ci+0.5);
+    const endR = matchResult[ci] ? WR+2 : DOT;
+    p.push(ln(tl(px(TR,A(2*ci)),   py(TR,A(2*ci)),   px(MD_R,am),py(MD_R,am), NR+2, endR), 1.3, 0.75));
+    p.push(ln(tl(px(TR,A(2*ci+1)), py(TR,A(2*ci+1)), px(MD_R,am),py(MD_R,am), NR+2, endR), 1.3, 0.75));
+  }
+  // R32 connectors → R16 junctions
+  for (let i = 0; i < 8; i++) {
+    const am1=A(4*i+0.5), am2=A(4*i+2.5), aj=A(4*i+1.5);
+    const r1a = matchResult[2*i]   ? WR+2 : DOT;
+    const r1b = matchResult[2*i+1] ? WR+2 : DOT;
+    p.push(ln(tl(px(MD_R,am1),py(MD_R,am1), px(R16,aj),py(R16,aj), r1a, DOT16), 1.3, 0.7));
+    p.push(ln(tl(px(MD_R,am2),py(MD_R,am2), px(R16,aj),py(R16,aj), r1b, DOT16), 1.3, 0.7));
+  }
+  // R16 → QF
+  for (let i = 0; i < 4; i++) {
+    const aj1=A(8*i+1.5), aj2=A(8*i+5.5), aqf=A(8*i+3.5);
+    p.push(ln(tl(px(R16,aj1),py(R16,aj1), px(QF,aqf),py(QF,aqf), DOT16, DOT_QF), 1.4, 0.72));
+    p.push(ln(tl(px(R16,aj2),py(R16,aj2), px(QF,aqf),py(QF,aqf), DOT16, DOT_QF), 1.4, 0.72));
+  }
+  // QF → SF
+  for (let i = 0; i < 2; i++) {
+    const aqf1=A(16*i+3.5), aqf2=A(16*i+11.5), asf=A(16*i+7.5);
+    p.push(ln(tl(px(QF,aqf1),py(QF,aqf1), px(SF,asf),py(SF,asf), DOT_QF, DOT_SF), 1.5, 0.75));
+    p.push(ln(tl(px(QF,aqf2),py(QF,aqf2), px(SF,asf),py(SF,asf), DOT_QF, DOT_SF), 1.5, 0.75));
+  }
+  // SF → trophy
+  for (let i = 0; i < 2; i++) {
+    const asf=A(16*i+7.5);
+    p.push(ln(tl(px(SF,asf),py(SF,asf), CX,CY, DOT_SF, TROPHY_R), 1.6, 0.78));
+  }
+
+  // ── CONNECTOR DOTS ──
+  for (let ci = 0; ci < 16; ci++) {
+    const am = A(2*ci+0.5);
+    const cx2 = px(MD_R,am), cy2 = py(MD_R,am);
+    const res = matchResult[ci];
+    if (res) {
+      const wcc = CC[res.winner];
+      p.push(`<g style="cursor:pointer" onmouseenter="showWinnerTip(event,${ci})" onmouseleave="hideBracketTip()" onclick="showWinnerTip(event,${ci})">`);
+      p.push(`<circle cx="${f(cx2)}" cy="${f(cy2)}" r="${WR+2}" fill="#1e1608" stroke="${LC}" stroke-width="2"/>`);
+      if (wcc) p.push(`<image href="https://flagcdn.com/w80/${wcc}.png" x="${f(cx2-WR)}" y="${f(cy2-WR)}" width="${2*WR}" height="${2*WR}" clip-path="url(#fc)" preserveAspectRatio="xMidYMid slice"/>`);
+      p.push(`</g>`);
+    } else {
+      p.push(`<circle cx="${f(cx2)}" cy="${f(cy2)}" r="5" fill="${LC}" opacity="0.9"/>`);
+    }
+  }
+  for (let i = 0; i < 8; i++) {
+    const aj = A(4*i+1.5);
+    p.push(`<circle cx="${f(px(R16,aj))}" cy="${f(py(R16,aj))}" r="5.5" fill="${LC}" opacity="0.9"/>`);
+  }
+  for (let i = 0; i < 4; i++) {
+    const aqf = A(8*i+3.5);
+    p.push(`<circle cx="${f(px(QF,aqf))}" cy="${f(py(QF,aqf))}" r="6" fill="${LC}" opacity="0.9"/>`);
+  }
+  for (let i = 0; i < 2; i++) {
+    const asf = A(16*i+7.5);
+    p.push(`<circle cx="${f(px(SF,asf))}" cy="${f(py(SF,asf))}" r="6.5" fill="${LC}" opacity="0.9"/>`);
+  }
+
+  // ── TEAM NODES ──
+  ORD.forEach((mi, ci) => {
+    const match = r32[mi];
+    if (!match) return;
+    const [,t1,t2] = match;
+    [[t1,2*ci],[t2,2*ci+1]].forEach(([team,slot]) => {
+      const a = A(slot);
+      const tx = px(TR,a), ty = py(TR,a);
+      const cc = CC[team];
+      const res = matchResult[ci];
+      // Dim eliminated teams
+      const opacity = res && res.loser === team ? '0.28' : '1';
+      const strokeColor = res && res.loser === team ? '#555' : LC;
+      p.push(`<g style="cursor:pointer;opacity:${opacity}" onmouseenter="showBracketTip(event,${mi})" onmouseleave="hideBracketTip()" onclick="showBracketTip(event,${mi})">`);
+      p.push(`<circle cx="${f(tx)}" cy="${f(ty)}" r="${NR+2}" fill="#1e1608" stroke="${strokeColor}" stroke-width="2"/>`);
+      if (cc) {
+        p.push(`<image href="https://flagcdn.com/w80/${cc}.png" x="${f(tx-NR)}" y="${f(ty-NR)}" width="${2*NR}" height="${2*NR}" clip-path="url(#fc)" preserveAspectRatio="xMidYMid slice"/>`);
+      } else {
+        p.push(`<circle cx="${f(tx)}" cy="${f(ty)}" r="${NR}" fill="#1a1a1a"/>`);
+        p.push(`<text x="${f(tx)}" y="${f(ty+3.5)}" text-anchor="middle" font-size="8" fill="#888" font-family="monospace">${abbrevPlaceholder(team)}</text>`);
+      }
+      p.push(`</g>`);
+    });
+  });
+
+  // ── TROPHY CENTER ──
+  p.push(`<circle cx="${CX}" cy="${CY}" r="32" fill="#0d0800" stroke="${LC}" stroke-width="2.5"/>`);
+  p.push(`<text x="${CX}" y="${CY+10}" text-anchor="middle" font-size="28">🏆</text>`);
+
+  document.getElementById('bracketSvgWrap').innerHTML =
+    `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:860px;display:block;margin:0 auto;background:#050d1e;border-radius:12px">
+  ${p.join('\n  ')}
+</svg>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  BRACKET TOOLTIP
+// ═══════════════════════════════════════════════════════
+function showBracketTip(evt, mi) {
+  const r32 = M.filter(m => m[5]==='R32');
+  const match = r32[mi];
+  if (!match) return;
+  const [utc, t1, t2, venue, city,,, score] = match;
+  const f1 = FLAG[t1]||'', f2 = FLAG[t2]||'';
+  const scoreEl = score != null
+    ? `<span class="match-tip-score">${score}</span>`
+    : `<span class="match-tip-vs">VS</span>`;
+  document.getElementById('matchTip').innerHTML = `
+    <div class="match-tip-round">Round of 32</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0">
+      <div style="display:flex;align-items:center;gap:7px">
+        <span style="font-size:1.4rem;flex-shrink:0">${f1}</span>
+        <strong style="white-space:nowrap">${t1}</strong>
+      </div>
+      ${scoreEl}
+      <div style="display:flex;align-items:center;gap:7px;justify-content:flex-end">
+        <strong style="white-space:nowrap">${t2}</strong>
+        <span style="font-size:1.4rem;flex-shrink:0">${f2}</span>
+      </div>
+    </div>
+    <div class="match-tip-meta">
+      <span class="match-tip-date">${fmtDate(utc)} · ${fmtTime(utc)}</span><br>
+      ${venue}, ${city}
+    </div>`;
+  const tip = document.getElementById('matchTip');
+  tip.style.display = 'block';
+  moveBracketTip(evt);
+}
+
+function moveBracketTip(evt) {
+  const tip = document.getElementById('matchTip');
+  const x = evt.clientX + 16, y = evt.clientY - 16;
+  tip.style.left = Math.min(x, window.innerWidth - 300) + 'px';
+  tip.style.top  = Math.max(y, 8) + 'px';
+}
+
+function hideBracketTip() {
+  document.getElementById('matchTip').style.display = 'none';
+}
+
+function showWinnerTip(evt, ci) {
+  const ORD     = window._bracketORD || [0,2,1,4,3,5,6,7,10,11,8,9,13,15,12,14];
+  const results = window._bracketResults || {};
+  const r32m    = M.filter(m => m[5]==='R32');
+  const r16m    = M.filter(m => m[5]==='R16');
+
+  const thisRes = results[ci];
+  if (!thisRes) return;
+
+  const r16_i   = Math.floor(ci / 2);
+  const r16     = r16m[r16_i];
+  const pairCI  = ci ^ 1;                 // paired R32 match (0↔1, 2↔3 …)
+  const pairRes = results[pairCI];
+  const pairM   = r32m[ORD[pairCI]];
+
+  const wFlag = FLAG[thisRes.winner] || '';
+  const scoreEl = r16 && r16[7] != null
+    ? `<span class="match-tip-score">${r16[7]}</span>`
+    : `<span class="match-tip-vs">VS</span>`;
+
+  // Left side: winner
+  const leftHtml = `<div style="display:flex;align-items:center;gap:7px;min-width:0">
+    <span style="font-size:1.4rem;flex-shrink:0">${wFlag}</span>
+    <strong style="white-space:nowrap">${thisRes.winner}</strong>
+  </div>`;
+
+  // Right side: known winner or both potential teams stacked
+  let rightHtml;
+  if (pairRes) {
+    const oFlag = FLAG[pairRes.winner] || '';
+    rightHtml = `<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end">
+      <strong style="white-space:nowrap">${pairRes.winner}</strong>
+      <span style="font-size:1.4rem;flex-shrink:0">${oFlag}</span>
+    </div>`;
+  } else if (pairM) {
+    const [,pt1,pt2] = pairM;
+    const pf1 = FLAG[pt1]||'', pf2 = FLAG[pt2]||'';
+    rightHtml = `<div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:0.82rem;color:#a08840;white-space:nowrap">${pt1}</span>
+        <span style="font-size:1.2rem">${pf1}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;opacity:0.55">
+        <span style="font-size:0.82rem;color:#a08840;white-space:nowrap">${pt2}</span>
+        <span style="font-size:1.2rem">${pf2}</span>
+      </div>
+    </div>`;
+  } else {
+    rightHtml = `<span style="color:#4a6080">TBD</span>`;
+  }
+
+  document.getElementById('matchTip').innerHTML = `
+    <div class="match-tip-round">Round of 16</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0">
+      ${leftHtml}
+      ${scoreEl}
+      ${rightHtml}
+    </div>
+    <div class="match-tip-meta">
+      <span class="match-tip-date">${r16 ? fmtDate(r16[0])+' · '+fmtTime(r16[0]) : 'Date TBD'}</span><br>
+      ${r16 ? r16[3]+', '+r16[4] : ''}
+    </div>`;
+  document.getElementById('matchTip').style.display = 'block';
+  moveBracketTip(evt);
+}
 
 // boot
 updateTzUI();
