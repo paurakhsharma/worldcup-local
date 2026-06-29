@@ -2230,14 +2230,14 @@ const M = [
 ["2026-07-03T18:00Z","Australia","Egypt","AT&T Stadium","Arlington","R32",0,null],
 ["2026-07-03T22:00Z","Argentina","Cape Verde","Hard Rock Stadium","Miami","R32",0,null],
 ["2026-07-04T01:30Z","Colombia","Ghana","Arrowhead Stadium","Kansas City","R32",0,null],
-["2026-07-04T17:00Z","R32 M1 Winner","R32 M3 Winner","NRG Stadium","Houston","R16",0,null],
-["2026-07-04T21:00Z","R32 M2 Winner","R32 M5 Winner","Lincoln Financial Field","Philadelphia","R16",0,null],
-["2026-07-05T20:00Z","R32 M4 Winner","R32 M6 Winner","MetLife Stadium","New Jersey","R16",0,null],
-["2026-07-06T00:00Z","R32 M7 Winner","R32 M8 Winner","Estadio Azteca","Mexico City","R16",0,null],
+["2026-07-04T17:00Z","R32 M1 Winner","R32 M4 Winner","NRG Stadium","Houston","R16",0,null],
+["2026-07-04T21:00Z","R32 M3 Winner","R32 M6 Winner","Lincoln Financial Field","Philadelphia","R16",0,null],
 ["2026-07-06T19:00Z","R32 M11 Winner","R32 M12 Winner","AT&T Stadium","Arlington","R16",0,null],
 ["2026-07-07T00:00Z","R32 M9 Winner","R32 M10 Winner","Lumen Field","Seattle","R16",0,null],
-["2026-07-07T16:00Z","R32 M14 Winner","R32 M16 Winner","Mercedes-Benz Stadium","Atlanta","R16",0,null],
-["2026-07-07T20:00Z","R32 M13 Winner","R32 M15 Winner","BC Place","Vancouver","R16",0,null],
+["2026-07-05T20:00Z","R32 M2 Winner","R32 M5 Winner","MetLife Stadium","New Jersey","R16",0,null],
+["2026-07-06T00:00Z","R32 M7 Winner","R32 M8 Winner","Estadio Azteca","Mexico City","R16",0,null],
+["2026-07-07T16:00Z","R32 M15 Winner","R32 M14 Winner","Mercedes-Benz Stadium","Atlanta","R16",0,null],
+["2026-07-07T20:00Z","R32 M13 Winner","R32 M16 Winner","BC Place","Vancouver","R16",0,null],
 ["2026-07-09T20:00Z","R16 Match Winner","R16 Match Winner","Gillette Stadium","Foxborough","QF",0,null],
 ["2026-07-10T19:00Z","R16 Match Winner","R16 Match Winner","SoFi Stadium","Los Angeles","QF",0,null],
 ["2026-07-11T21:00Z","R16 Match Winner","R16 Match Winner","Hard Rock Stadium","Miami","QF",0,null],
@@ -2509,7 +2509,7 @@ function render() {
     if (showFav && !m.hasFav) return false;
     if (filterVal && m.round !== filterVal) return false;
     return true;
-  });
+  }).sort((a, b) => new Date(a.utc) - new Date(b.utc));
 
   const totalGood = M.filter(m => isOk(m[0])).length;
   const totalTeam = M.filter(m => favs.has(m[1]) || favs.has(m[2])).length;
@@ -2680,9 +2680,14 @@ function renderBracket() {
   const py = (r,a) => CY + r*Math.sin(a);
   const f  = n => n.toFixed(1);
 
-  // R32 match order arranged so adjacent pairs share the same R16 match
-  // Based on actual R16 matchups: R16[0]=R32_M1 vs R32_M3, R16[1]=R32_M2 vs R32_M5, etc.
-  const ORD = [0,2,1,4,3,5,6,7,10,11,8,9,13,15,12,14];
+  // R32 match order for circular bracket — adjacent pairs share same R16; adjacent quartets share same QF; semicircles share same SF
+  // SF1 (M101): QF1(M97)=R16-1+R16-2, QF2(M98)=R16-5+R16-6
+  //   R16-1: M1(S.Africa/Canada)+M4(Neth/Morocco) | R16-2: M3(Ger/Para)+M6(Fra/Swe)
+  //   R16-5: M11(Spa/Aut)+M12(Por/Cro)           | R16-6: M9(Bel/Sen)+M10(USA/Bos)
+  // SF2 (M102): QF3(M99)=R16-3+R16-4, QF4(M100)=R16-7+R16-8
+  //   R16-3: M2(Bra/Jpn)+M5(Ivo/Nor)             | R16-4: M7(Mex/Ecu)+M8(Eng/DRC)
+  //   R16-7: M15(Arg/CPV)+M14(Aus/Egy)            | R16-8: M13(Sui/Alg)+M16(Col/Gha)
+  const ORD = [0,3,2,5,10,11,8,9,1,4,6,7,14,13,12,15];
   const r32 = M.filter(m => m[5]==='R32');
 
   const p = [];
@@ -2888,7 +2893,7 @@ function hideBracketTip() {
 }
 
 function showWinnerTip(evt, ci) {
-  const ORD     = window._bracketORD || [0,2,1,4,3,5,6,7,10,11,8,9,13,15,12,14];
+  const ORD     = window._bracketORD || [0,3,2,5,10,11,8,9,1,4,6,7,14,13,12,15];
   const results = window._bracketResults || {};
   const r32m    = M.filter(m => m[5]==='R32');
   const r16m    = M.filter(m => m[5]==='R16');
