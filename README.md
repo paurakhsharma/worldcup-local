@@ -238,6 +238,7 @@ Third-place teams that advanced: Bosnia & Herzegovina (B), Paraguay (D), Ecuador
 | Jun 30 17:00 | Ivory Coast | Norway | 1-2 |
 | Jun 30 21:00 | France | Sweden | 3-0 |
 | Jul 01 01:00 | Mexico | Ecuador | 2-0 |
+| Jul 01 16:00 | England | DR Congo | 2-1 |
 
 **R16 matchups confirmed from R32 winners:**
 
@@ -246,7 +247,7 @@ Third-place teams that advanced: Bosnia & Herzegovina (B), Paraguay (D), Ecuador
 | Jul 04 17:00 | Canada | Morocco | NRG Stadium |
 | Jul 04 21:00 | Paraguay | France | Lincoln Financial Field |
 | Jul 05 20:00 | Brazil | Norway | MetLife Stadium |
-| Jul 06 00:00 | Mexico | England or DR Congo | Estadio Azteca |
+| Jul 06 00:00 | Mexico | England | Estadio Azteca |
 
 ### How to fetch knockout stage data
 
